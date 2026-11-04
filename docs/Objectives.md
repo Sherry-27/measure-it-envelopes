@@ -17,3 +17,11 @@ These targets were set before capture. Results are pending.
 - Paired raw and undistorted physical results with per-envelope ground truth, units, acquisition conditions, counts and errors. If reporting time, take five runs and give the median and range.
 - CPU, GPU, RAM, OS, camera, resolution and ruler division. Record local inference and training environments separately.
 - Actual outputs and the configuration, checkpoint hash and commands that produced them.
+
+## Board observations from the supplied photos
+
+The programme found 63 inner corners in each of 20 PNGs, giving 1,260 observed corner positions. Four views required the fallback detector. The sheet has visible creases. Each image has a different width-height combination and the crop offsets are unknown. The printed label gives a nominal square size of 18 mm. A physical square measurement has not been supplied.
+
+For each view, a planar transform predicts alternate grid intersections from the other intersections. Swapping the two groups lets every corner act as a check. Across these 20 per-photo RMS errors, the mean is 4.46 px, median 4.19 px and worst 9.26 px (board_09.png). This check is in the pixel units of each export and includes effects of paper shape and lens geometry. It does not isolate lens distortion, provide camera-calibration reprojection RMS or measure envelope error. Both assessment objectives remain unmeasured.
+
+[Per-photo table](../calibration/evidence/views.csv) · [Detected corners](../calibration/evidence/corners.json)

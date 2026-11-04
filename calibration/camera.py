@@ -30,6 +30,13 @@ def find_board(frame):
     small = cv2.resize(gray, None, fx=scale, fy=scale, interpolation=cv2.INTER_AREA)
     found, corners = cv2.findChessboardCornersSB(small, (7, 9))
     if not found:
+        small = cv2.resize(small, None, fx=0.65, fy=0.65, interpolation=cv2.INTER_AREA)
+        flags = cv2.CALIB_CB_NORMALIZE_IMAGE | cv2.CALIB_CB_EXHAUSTIVE | cv2.CALIB_CB_ACCURACY
+        found, corners = cv2.findChessboardCornersSB(small, (7, 9), flags)
+    if not found:
+        flags = cv2.CALIB_CB_ADAPTIVE_THRESH | cv2.CALIB_CB_NORMALIZE_IMAGE
+        found, corners = cv2.findChessboardCorners(small, (7, 9), flags)
+    if not found:
         return None
     corners[:, :, 0] *= gray.shape[1] / small.shape[1]
     corners[:, :, 1] *= gray.shape[0] / small.shape[0]

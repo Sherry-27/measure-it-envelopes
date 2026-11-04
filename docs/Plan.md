@@ -22,3 +22,9 @@ Groups 01–07 train, 08–09 validate, and 10 tests. Each group is a different 
 ## Working decisions
 
 Use the reference marker corners to establish a metric plane. The envelope and marker must lie flat at the same height. Use a ruler for the available ground truth and record its resolution. The brief asks for a calliper for the printed square. Record the actual tool used and flag any deviation. Record changes here when they occur.
+
+## Capture update
+
+Eight envelopes are available. The planned ten session IDs and the original split lists stay fixed. Training groups 01 through 07 can reuse the first five physical envelopes. Validation groups 08 and 09 reserve envelopes 6 and 7, and group 10 reserves envelope 8. The physical accuracy check still calls for ten measured instances.
+
+The first board batch contains twenty PNG exports of different sizes and aspect ratios. The original crop offsets and scaling are unavailable. Resizing each export to the same rectangle would move grid points by different unknown amounts. The inspection therefore keeps each photo in its supplied coordinates and saves the corner overlay and per-view result. The cost is that this batch cannot establish the distortion correction to apply to a fresh phone image.

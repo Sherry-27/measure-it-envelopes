@@ -13,3 +13,8 @@ Leave each item open until an artifact or run demonstrates it. At closeout put t
 - [ ] README reproduces the commands on the stated hardware and describes the dataset. Three assessment documents are present.
 - [ ] Public pull request and accessible weights checked. Loom is at most five minutes and shows the fresh capture, ruler check, code path and four spoken answers.
 - [ ] Unfinished work and limitations listed with reasons.
+
+## Evidence from the board batch
+
+- [x] All 20 received PNGs preserved. The 7 × 9 inner grid was detected in each one. [Per-photo checks and hashes](../calibration/evidence/views.csv). Marked previews are stored locally.
+- [ ] Transferable camera parameters and lens-calibration reprojection RMS. The supplied images have different sizes and aspect ratios, with unknown transforms back to the sensor. The board images are the only physical inputs received. Envelope training, physical accuracy, refusal costs and the live demonstration remain unverified.

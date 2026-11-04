@@ -7,3 +7,6 @@ models/runs/
 Thumbs.db
 .ipynb_checkpoints/
 
+
+/calibration/received/
+/calibration/evidence/detected-views.jpg
