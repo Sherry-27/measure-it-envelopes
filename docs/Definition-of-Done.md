@@ -2,7 +2,7 @@
 
 Leave each item open until an artifact or run demonstrates it. At closeout put the result and its path or commit on the same line. State the reason for any open item.
 
-- [ ] Plan and fixed test list precede implementation in Git history.
+- [x] Plan and fixed test list precede implementation in Git history. [First commit, 93ee88b](https://github.com/Sherry-27/measure-it-envelopes/commit/93ee88bd57d0a59c295805fcc32b64daf2cf83b6) contains three documents and the 49/14/7 file lists.
 - [ ] At least 20 usable board views, measured square size, saved intrinsics, reprojection RMS and a visual check.
 - [ ] At least 70 original object photos, with reviewed masks on undistorted images and committed 70/20/10 lists. Check no duplicates across splits.
 - [ ] Model trained on the training split; validation selection, config, versions, seed, weights hash and five test metrics recorded.
