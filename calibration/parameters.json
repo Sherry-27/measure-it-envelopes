@@ -1,0 +1,83 @@
+{
+  "image_size": [
+    1200,
+    900
+  ],
+  "native_image_size": [
+    4032,
+    3024
+  ],
+  "square_mm": 18.0,
+  "square_size_basis": "nominal print specification; physical reading unavailable",
+  "fit": "single radial coefficient; fixed centre, zero tangent, square pixels and 26 mm-equivalent EXIF focal prior",
+  "camera_matrix": [
+    [
+      901.3878188659972,
+      0.0,
+      599.5
+    ],
+    [
+      0.0,
+      901.3878188659972,
+      449.5
+    ],
+    [
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "distortion": [
+    0.10230705725154123,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "rms_px": 1.0349813669321912,
+  "accepted": [
+    "IMG_4373.HEIC",
+    "IMG_4374.HEIC",
+    "IMG_4375.HEIC",
+    "IMG_4376.HEIC",
+    "IMG_4377.HEIC",
+    "IMG_4378.HEIC",
+    "IMG_4379.HEIC",
+    "IMG_4380.HEIC",
+    "IMG_4381.HEIC",
+    "IMG_4382.HEIC",
+    "IMG_4383.HEIC",
+    "IMG_4384.HEIC",
+    "IMG_4385.HEIC",
+    "IMG_4386.HEIC",
+    "IMG_4387.HEIC",
+    "IMG_4388.HEIC",
+    "IMG_4389.HEIC",
+    "IMG_4390.HEIC",
+    "IMG_4391.HEIC",
+    "IMG_4392.HEIC"
+  ],
+  "rejected": [],
+  "per_view_rms_px": {
+    "IMG_4373.HEIC": 1.0070797204971313,
+    "IMG_4374.HEIC": 1.1370773315429688,
+    "IMG_4375.HEIC": 1.2140535116195679,
+    "IMG_4376.HEIC": 1.3400065898895264,
+    "IMG_4377.HEIC": 1.246394395828247,
+    "IMG_4378.HEIC": 1.1720219850540161,
+    "IMG_4379.HEIC": 1.0161985158920288,
+    "IMG_4380.HEIC": 1.0824122428894043,
+    "IMG_4381.HEIC": 0.9548888206481934,
+    "IMG_4382.HEIC": 0.9263285994529724,
+    "IMG_4383.HEIC": 0.8536669015884399,
+    "IMG_4384.HEIC": 0.8791794776916504,
+    "IMG_4385.HEIC": 0.8681045174598694,
+    "IMG_4386.HEIC": 0.9957119226455688,
+    "IMG_4387.HEIC": 1.0643351078033447,
+    "IMG_4388.HEIC": 0.9367629885673523,
+    "IMG_4389.HEIC": 0.9724389910697937,
+    "IMG_4390.HEIC": 0.9451485872268677,
+    "IMG_4391.HEIC": 0.970930814743042,
+    "IMG_4392.HEIC": 0.9523575901985168
+  }
+}

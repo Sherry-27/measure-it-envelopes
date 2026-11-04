@@ -23,6 +23,8 @@ class Meter:
 
     @torch.inference_mode()
     def measure(self, original, raw=False):
+        if list(original.shape[1::-1]) == self.parameters.get("native_image_size"):
+            original = cv2.resize(original, tuple(self.parameters["image_size"]), interpolation=cv2.INTER_AREA)
         if list(original.shape[1::-1]) != self.parameters["image_size"]:
             raise ValueError("Image size differs from the calibration resolution.")
         frame = original.copy() if raw else correct(original, self.parameters)
@@ -70,8 +72,8 @@ def load_meter(args):
 def options(parser):
     parser.add_argument("--calibration", type=Path, default=Path("calibration/parameters.json"))
     parser.add_argument("--weights", type=Path, default=Path("models/runs/first/best.pth"))
-    parser.add_argument("--marker-width-mm", required=True, type=float)
-    parser.add_argument("--marker-height-mm", required=True, type=float)
+    parser.add_argument("--marker-width-mm", default=36., type=float)
+    parser.add_argument("--marker-height-mm", default=36., type=float)
     parser.add_argument("--device", default="cpu")
 
 

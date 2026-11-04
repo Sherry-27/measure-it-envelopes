@@ -8,9 +8,14 @@ from torchvision.models.detection.mask_rcnn import MaskRCNNPredictor
 
 
 def build_model(config, pretrained=False):
-    backbone = resnet_fpn_backbone(backbone_name="resnet50", weights=None, trainable_layers=3)
+    backbone = resnet_fpn_backbone(backbone_name="resnet50", weights=None, trainable_layers=config.get("trainable_backbone_layers", 3))
     model = MaskRCNN(backbone, num_classes=91, min_size=config["min_size"],
-                     max_size=config["max_size"], box_detections_per_img=5, box_score_thresh=0.001)
+                     max_size=config["max_size"], box_detections_per_img=5, box_score_thresh=0.001,
+                     rpn_pre_nms_top_n_train=config.get("pre_nms", 2000),
+                     rpn_pre_nms_top_n_test=config.get("pre_nms", 1000),
+                     rpn_post_nms_top_n_train=config.get("post_nms", 2000),
+                     rpn_post_nms_top_n_test=config.get("post_nms", 1000),
+                     box_batch_size_per_image=config.get("roi_batch", 512))
     if pretrained:
         weights = MaskRCNN_ResNet50_FPN_Weights.COCO_V1
         model.load_state_dict(weights.get_state_dict(progress=True, check_hash=True))

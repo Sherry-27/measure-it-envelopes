@@ -8,6 +8,9 @@ import numpy as np
 
 
 def read_image(path):
+    if Path(path).suffix.lower() in {".heic", ".heif"}:
+        from dataset.iphone import sensor_frame
+        return sensor_frame(path)
     flags = cv2.IMREAD_COLOR | cv2.IMREAD_IGNORE_ORIENTATION
     frame = cv2.imread(str(path), flags)
     if frame is None:

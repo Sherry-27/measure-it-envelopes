@@ -1,5 +1,7 @@
 """Fine-tune on train only and freeze a validation-selected checkpoint."""
 import argparse
+import csv
+import time
 import json
 import random
 from pathlib import Path
@@ -15,9 +17,14 @@ from models.network import build_model, tensor_image, working_frame
 
 
 class Envelopes(Dataset):
-    def __init__(self, split):
+    def __init__(self, split, for_selection=False):
         all_names()
         self.names = split_names(split)
+        self.augment = split == "train"
+        if for_selection:
+            with (BASE / "capture-index.csv").open() as source:
+                eligible = {r["slot"] for r in csv.DictReader(source) if r["use_for_selection"] == "1"}
+            self.names = [name for name in self.names if name in eligible]
 
     def __len__(self):
         return len(self.names)
@@ -30,6 +37,13 @@ class Envelopes(Dataset):
             raise ValueError(f"Missing or mismatched mask: {name}")
         frame = working_frame(original)
         mask = cv2.resize(mask, frame.shape[1::-1], interpolation=cv2.INTER_NEAREST) > 0
+        if self.augment:
+            turns = random.randrange(4)
+            frame = np.ascontiguousarray(np.rot90(frame, turns))
+            mask = np.ascontiguousarray(np.rot90(mask, turns))
+            if random.random() < 0.5:
+                frame = np.ascontiguousarray(frame[:, ::-1])
+                mask = np.ascontiguousarray(mask[:, ::-1])
         y, x = np.nonzero(mask)
         if not x.size:
             raise ValueError(f"Empty mask: {name}")
@@ -73,12 +87,14 @@ def validation(model, dataset, device, candidates):
 
 def train(config_path, out, device):
     cfg = json.loads(config_path.read_text())
+    if str(device) == "cpu":
+        torch.set_num_threads(cfg.get("cpu_threads", 2))
     random.seed(cfg["seed"])
     np.random.seed(cfg["seed"])
     torch.manual_seed(cfg["seed"])
     torch.backends.cudnn.benchmark = False
     torch.backends.cudnn.deterministic = True
-    train_ds, val_ds = Envelopes("train"), Envelopes("val")
+    train_ds, val_ds = Envelopes("train"), Envelopes("val", for_selection=True)
     loader = DataLoader(train_ds, batch_size=cfg["batch_size"], shuffle=True,
                         collate_fn=lambda batch: tuple(zip(*batch)), num_workers=0)
     model = build_model(cfg, pretrained=True).to(device)
@@ -89,6 +105,7 @@ def train(config_path, out, device):
         raise ValueError("Choose a new run directory to preserve the existing evidence.")
     best_key = (-1., -1.)
     for epoch in range(1, cfg["epochs"]+1):
+        epoch_start = time.monotonic()
         model.train()
         losses = []
         for images, targets in loader:
@@ -101,6 +118,8 @@ def train(config_path, out, device):
             loss.backward()
             optimizer.step()
             losses.append(float(loss.detach()))
+            if len(losses) % 10 == 0:
+                print(f"Epoch {epoch}, step {len(losses)}/{len(loader)}, loss {losses[-1]:.4f}", flush=True)
         choice, grid = validation(model, val_ds, device, cfg["score_candidates"])
         key = (choice["mean_iou"], choice["f1"])
         if key > best_key:
@@ -109,7 +128,7 @@ def train(config_path, out, device):
             (out / "best.tmp").replace(out / "best.pth")
             best_key = key
         line = json.dumps(dict(epoch=epoch, train_loss=float(np.mean(losses)), validation=grid,
-                               selected=choice, device=str(device)))
+                               selected=choice, device=str(device), elapsed_seconds=round(time.monotonic()-epoch_start,2)))
         print(line, flush=True)
         with (out / "training.jsonl").open("a") as stream:
             stream.write(line + "\n")
