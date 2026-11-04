@@ -4,7 +4,7 @@ Measure the long and short edges of one flat paper envelope using an iPhone 11 P
 
 **Progress on the supplied photos.** OpenCV located the full grid in each of the 20 submitted board images. The exports have 20 different pixel dimensions and different aspect ratios. Their crop positions and scales relative to the iPhone sensor are unknown. A camera matrix that can be applied to a new iPhone image remains unverified. The supplied batch contains checkerboards only. The measured envelope results, trained weights and recording are outstanding.
 
-Run the inspection from the repository root with `python -m calibration.inspect_views calibration/received calibration/evidence`. The corner coordinates and per-image results use the supplied pixel coordinates. The source photos and marked preview are held locally. The public branch includes the [per-photo results](calibration/evidence/views.csv) and [detected coordinates](calibration/evidence/corners.json).
+Run the inspection from the repository root with `python -m calibration.inspect_views calibration/received calibration/evidence`. The corner coordinates and per-image results use the supplied pixel coordinates. The source photos and marked preview are held locally. The [20 board-only crops](calibration/evidence/board-only-crops.zip) show the printed grids on a neutral background at 1280 × 1280. Each crop retained all 63 detected intersections. The included crop map goes back to the received export. Original sensor crop offsets remain unknown. The public branch includes the [per-photo results](calibration/evidence/views.csv) and [detected coordinates](calibration/evidence/corners.json).
 
 ## Capture
 
