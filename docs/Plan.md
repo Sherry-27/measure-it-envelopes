@@ -1,40 +1,32 @@
 # Measure It | Plan
 
-Measure the long and short sides of a flat paper envelope in millimetres. Use ten physical envelopes, an iPhone 11 Pro and a ruler. Record the envelope dimensions, smallest ruler division and capture resolution at collection. Flat envelopes are easy to hold against a ruler. Use unaddressed faces and vary the backgrounds.
+The first version of this plan and the 49/14/7 filename lists were committed before code. The goal is to measure the long and short sides of a flat envelope using an iPhone 11 Pro, a printed reference and a ruler.
 
-| Minutes | Work and stopping point |
+| Active minutes | Intended work |
 | ---: | --- |
-| 25 | Commit the plan, objectives, checklist and filename lists. Assign one envelope and one capture session to each group. |
-| 55 | Lock the phone settings. Photograph the printed board in about 25 poses. Fit a camera model from at least 20 accepted views and inspect straight edges after correction. |
-| 110 | Take seven independent photos of each envelope, moving the envelope and reference between shots. Save originals, undistort, and trace the outer boundary. Manually review the masks. |
-| 65 | Fine-tune a pretrained TorchVision Mask R-CNN on the training groups. Select a checkpoint and confidence cutoff on validation only. Run the locked test once after selection. |
-| 55 | Build the single-image command. Map the predicted contour onto the plane defined by a measured square marker. Check the overlay and both missing-input cases. |
-| 65 | Ruler-measure the ten envelopes individually. Photograph fresh placements. Compare the same images with and without lens correction, saving each result and refusal. |
-| 45 | If the accuracy table exists, move one envelope toward the image edge and check error and refusals. Record a design decision and its cost. |
-| 60 | Re-run setup and inference, attach evidence, and record a fresh photo and ruler check in the five-minute demo. Open the pull request. |
+| 25 | Commit the plan, objectives, checklist and split lists. |
+| 55 | Lock the camera, capture about 25 board poses, fit at least 20 usable views and check straight edges. |
+| 110 | Capture 70 envelope photos, correct them and review the outer-boundary masks. |
+| 65 | Fine-tune pretrained Mask R-CNN. Select the checkpoint and score cutoff on validation. |
+| 55 | Run one original through correction, segmentation, reference detection and metric conversion. Check missing inputs. |
+| 65 | Compare ten hand-measured instances against raw and corrected predictions. |
+| 45 | After the accuracy table, test worsening edge position and record one decision with its cost. |
+| 60 | Reproduce the commands, finish evidence and record the five-minute demonstration. |
 
-Total active work budget is eight hours. Install and training waits are separate. Skip a web app, hyperparameter sweeps and multiple architectures. If a stage overruns, protect the demo and document the last verified stage. The edge experiment comes after the accuracy check.
+Total active budget is eight hours. Unattended training and installation waits are separate. Skip a web app, multiple architectures and parameter sweeps. Protect the recording and declare anything unfinished.
 
-## Fixed capture assignment
+## Capture and split updates
 
-Groups 01–07 train, 08–09 validate, and 10 tests. Each group is a different physical envelope and independently staged session. The seven frames within a group vary position, rotation and background. The three lists name future undistorted JPEGs and are fixed before any code or capture. Keep group identities when copying originals. The test covers one unseen envelope; that limits conclusions about other designs.
+Eight physical envelopes were reported available. The initial plan proposed ten sessions with independent envelope identities. The delivered 70 photos use four surfaces and include repeated front/back appearances. Physical identities could not be established.
 
-## Working decisions
+Original camera files were bound to the reserved slots before fine-tuning. Training uses the twenty board-and-envelope captures plus 29 black-surface images. The validation set has five white, eight marble and one glass view. The glass view is excluded from checkpoint and threshold selection. The seven other glass views form the test. The test therefore covers a narrow scene.
 
-Use the reference marker corners to establish a metric plane. The envelope and marker must lie flat at the same height. Use a ruler for the available ground truth and record its resolution. The brief asks for a calliper for the printed square. Record the actual tool used and flag any deviation. Record changes here when they occur.
+The earlier twenty clipboard images had different crop sizes. Once the native HEIC files arrived, their orientation metadata recovered the common sensor frame. Calibration used the twenty full-frame training exposures. No test image was used to fit the camera or choose the checkpoint.
 
-## Capture update
+## Decision record
 
-Eight envelopes are available. The planned ten session IDs and the original split lists stay fixed. Training groups 01 through 07 can reuse the first five physical envelopes. Validation groups 08 and 09 reserve envelopes 6 and 7, and group 10 reserves envelope 8. The physical accuracy check still calls for ten measured instances.
+**Camera fit.** A free OpenCV fit reached 0.837 px RMS but estimated a focal length far from the phone's EXIF prior and large higher-order coefficients. The deployed model fixes the centre, square pixels and focal prior, then fits one radial coefficient. It costs 0.198 px of training RMS. It improved 19 of 20 omitted-view checks over zero distortion. A wider set of board positions would allow this choice to be revisited. The printed square is nominally 18 mm; the 36 mm reference was measured by the user.
 
-The first board batch contains twenty PNG exports of different sizes and aspect ratios. The original crop offsets and scaling are unavailable. Resizing each export to the same rectangle would move grid points by different unknown amounts. The inspection therefore keeps each photo in its supplied coordinates and saves the corner overlay and per-view result. The cost is that this batch cannot establish the distortion correction to apply to a fresh phone image.
+**Training.** The Colab plan changed to a local CPU run. ResNet stages were frozen, with a smaller proposal budget and 256–384 px model inputs. The FPN and detection components still fine-tune on the envelope masks. The cost is coarser edges and a slower laptop run. The final model missed part of the floral edge in one held-out image despite high confidence. The T4 notebook retains the same code for reproduction.
 
-## Decisions after the originals arrived
-
-The last twenty originals contained both the envelope and the printed checkerboard. Sensor orientation could be recovered from the HEIC metadata. Those full-frame observations provided calibration at a consistent 1200 × 900 working size. The earlier clipboard copies remain an inspection result.
-
-Actual capture scenes replaced the planned per-envelope sessions when binding originals to the already reserved slot names. All checkerboard exposures belong to training. Seven horizontally placed envelopes on glass were held out. The eighth glass image was assigned a validation slot and excluded from every selection decision. Physical specimen IDs were unavailable. Pretraining sources and local data were kept separate, and the photographic backgrounds were kept private in the local package.
-
-A free camera fit reduced the training RMS to 0.837 px but returned a focal length far from the phone's EXIF prior and large higher-order distortion coefficients. The deployed fit fixed the principal point and focal prior and estimated one radial coefficient. Its cost was 0.198 px of training reprojection RMS. Nineteen of twenty omitted-view checks improved over zero distortion. More board tilts and corner coverage would allow this choice to be revisited.
-
-The initial Colab plan became a local CPU run to avoid waiting for a hosted accelerator. The model uses a frozen ResNet body, smaller proposal budget and 256–384 px model inputs. The cost is coarser mask edges and a longer wait on the laptop. The Colab launcher retains the same versioned training code for reproduction.
+**Remaining evidence.** The calibrated command and mask scores are measured. Ten matched hand readings and a controlled worsening-condition series are absent. Physical error claims remain open. The candidate supplies the live recording and recruiter reply.

@@ -81,9 +81,10 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("image", type=Path)
     p.add_argument("--out", type=Path, default=Path("overlay.jpg"))
+    p.add_argument("--raw", action="store_true", help="Skip lens correction for a paired comparison on the same photograph.")
     options(p)
     args = p.parse_args()
-    result, overlay = load_meter(args).measure(read_image(args.image))
+    result, overlay = load_meter(args).measure(read_image(args.image), raw=args.raw)
     text = result["status"]
     if result["status"] == "ok":
         text = f'{result["width_mm"]:.1f} x {result["height_mm"]:.1f} mm  score {result["confidence"]:.2f}'

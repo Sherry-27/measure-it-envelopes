@@ -1,0 +1,18 @@
+{
+  "digitally_covered_marker": {
+    "status": "reference_not_found",
+    "width_mm": null,
+    "height_mm": null,
+    "confidence": 0.9812175035476685,
+    "score_threshold": 0.8,
+    "correction": "undistorted"
+  },
+  "marker_on_empty_canvas": {
+    "status": "object_not_found",
+    "width_mm": null,
+    "height_mm": null,
+    "confidence": null,
+    "score_threshold": 0.8,
+    "correction": "undistorted"
+  }
+}

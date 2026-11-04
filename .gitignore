@@ -10,3 +10,6 @@ Thumbs.db
 
 /calibration/received/
 /calibration/evidence/detected-views.jpg
+/dataset/images/
+/calibration/parameters.preview.jpg
+/dataset/masks/

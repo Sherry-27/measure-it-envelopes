@@ -1,0 +1,107 @@
+{
+  "train": {
+    "raw": {
+      "accepted": 46,
+      "total": 49,
+      "width_disagreement_with_traced_outline_mm": {
+        "mean": 3.1267083209493887,
+        "median": 2.6219482421875,
+        "worst": 8.410888671875
+      },
+      "height_disagreement_with_traced_outline_mm": {
+        "mean": 1.3681451548700747,
+        "median": 1.1390972137451172,
+        "worst": 3.891429901123047
+      }
+    },
+    "corrected": {
+      "accepted": 48,
+      "total": 49,
+      "width_disagreement_with_traced_outline_mm": {
+        "mean": 3.040696144104004,
+        "median": 3.10723876953125,
+        "worst": 9.644607543945312
+      },
+      "height_disagreement_with_traced_outline_mm": {
+        "mean": 1.4634910424550374,
+        "median": 1.2129058837890625,
+        "worst": 3.6389617919921875
+      }
+    }
+  },
+  "val": {
+    "raw": {
+      "accepted": 13,
+      "total": 14,
+      "width_disagreement_with_traced_outline_mm": {
+        "mean": 1.7682412954477162,
+        "median": 1.276611328125,
+        "worst": 4.6812591552734375
+      },
+      "height_disagreement_with_traced_outline_mm": {
+        "mean": 2.0426324697641225,
+        "median": 1.1425857543945312,
+        "worst": 7.0817718505859375
+      }
+    },
+    "corrected": {
+      "accepted": 13,
+      "total": 14,
+      "width_disagreement_with_traced_outline_mm": {
+        "mean": 2.241350614107572,
+        "median": 2.4569549560546875,
+        "worst": 4.629852294921875
+      },
+      "height_disagreement_with_traced_outline_mm": {
+        "mean": 2.654176565317007,
+        "median": 1.7020263671875,
+        "worst": 7.8597412109375
+      }
+    }
+  },
+  "test": {
+    "raw": {
+      "accepted": 7,
+      "total": 7,
+      "width_disagreement_with_traced_outline_mm": {
+        "mean": 8.889393397739955,
+        "median": 9.973037719726562,
+        "worst": 13.874008178710938
+      },
+      "height_disagreement_with_traced_outline_mm": {
+        "mean": 0.8943029131208148,
+        "median": 0.6718215942382812,
+        "worst": 2.46124267578125
+      }
+    },
+    "corrected": {
+      "accepted": 7,
+      "total": 7,
+      "width_disagreement_with_traced_outline_mm": {
+        "mean": 8.301603044782366,
+        "median": 6.6209564208984375,
+        "worst": 23.063034057617188
+      },
+      "height_disagreement_with_traced_outline_mm": {
+        "mean": 1.1035968235560827,
+        "median": 1.1045684814453125,
+        "worst": 1.7975692749023438
+      }
+    }
+  },
+  "meaning": "Both the model and traced outline use the same marker corners. Disagreement is a segmentation diagnostic. No hand-measured ground truth was supplied.",
+  "five_warm_runs": {
+    "file": "IMG_4298.HEIC",
+    "seconds": [
+      31.640952699999616,
+      24.549615300005826,
+      8.75542459999997,
+      10.651791799995408,
+      11.076092700001027
+    ],
+    "median_seconds": 11.076092700001027,
+    "min_seconds": 8.75542459999997,
+    "max_seconds": 31.640952699999616,
+    "last_status": "ok"
+  }
+}

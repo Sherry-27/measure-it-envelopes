@@ -1,0 +1,22 @@
+{
+  "Envelope-Dataset.zip": {
+    "url": "https://github.com/Sherry-27/measure-it-envelopes/releases/download/envelope-model-v1/Envelope-Dataset.zip",
+    "sha256": "d61655fa7d882f38e96966767552f29b9cf684272e121dfcc837c30056b8ff04",
+    "bytes": 21597509
+  },
+  "Test-Result-Images.zip": {
+    "url": "https://github.com/Sherry-27/measure-it-envelopes/releases/download/envelope-model-v1/Test-Result-Images.zip",
+    "sha256": "3ad2464755bb5e8ea9ab40883de9dc7348de1f1392397f071e34e06eb01466c5",
+    "bytes": 1915267
+  },
+  "Envelope-Test-Results.mp4": {
+    "url": "https://github.com/Sherry-27/measure-it-envelopes/releases/download/envelope-model-v1/Envelope-Test-Results.mp4",
+    "sha256": "73280df77e8f231fa16d7e88ccc99790d69059f88e2939acd50e7ee01bf496f5",
+    "bytes": 807575
+  },
+  "Camera-Originals-Sanitized.zip": {
+    "url": "https://github.com/Sherry-27/measure-it-envelopes/releases/download/envelope-model-v1/Camera-Originals-Sanitized.zip",
+    "sha256": "ac9392bcb76a77331e01e099e01ca81c27b00ec26d62e40c2777b8678958a02e",
+    "bytes": 128916582
+  }
+}

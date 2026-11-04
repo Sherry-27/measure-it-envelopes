@@ -20,9 +20,11 @@ def restore(originals, destination=Path("dataset"), calibration=Path("calibratio
     matrix = np.asarray(params["camera_matrix"])
     distortion = np.asarray(params["distortion"])
     maps = cv2.initUndistortRectifyMap(matrix, distortion, None, matrix, size, cv2.CV_32FC1)
+    with Path("dataset/public-sources.csv").open() as stream:
+        released = {row["source"]: row["public_sha256"] for row in csv.DictReader(stream)}
     for row in index:
         source = originals / row["source"]
-        if hashlib.sha256(source.read_bytes()).hexdigest() != row["sha256"]:
+        if hashlib.sha256(source.read_bytes()).hexdigest() not in {row["sha256"], released[row["source"]]}:
             raise ValueError(f"Original file differs from inventory: {source.name}")
     for name in ("images", "masks"):
         (destination / name).mkdir(exist_ok=True, parents=True)

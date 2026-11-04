@@ -1,59 +1,71 @@
 # Measure It
 
-Measure a flat envelope from one iPhone 11 Pro photograph. Place the printed marker beside the envelope on the same plane and keep the full black border visible. Width is the longer side of the fitted envelope rectangle. Height is the shorter side.
+This project measures a flat envelope from an iPhone 11 Pro photo. The camera is corrected first, Mask R-CNN finds the envelope, and a measured square marker supplies the scale.
 
-## Run a photograph
+The five-epoch CPU run reached **0.929 mean mask IoU** on seven held-out photos. The physical accuracy claim is still open because the ten-instance ruler readings have not been supplied. The saved example also shows why that check matters. Its confidence is 0.990 while part of the left edge is missing from the predicted mask.
 
-Use Python 3.12. The measured outer border of this marker is **36 × 36 mm**. Print files, camera parameters, configuration and evidence are on `dev-test01`. Install the requirements, put the selected checkpoint at `models/runs/first/best.pth`, then run from the repository root.
+![Held-out result](measurement/evidence/example-overlay.jpg)
+
+## Run it
+
+Use Python 3.12 from the root of this repository on branch `dev-test01`.
 
 ```sh
 python -m pip install -r requirements.txt
 python -m inference.measure my-envelope.HEIC --out measured.jpg
 ```
 
-The command prints JSON and saves an overlay. It accepts native iPhone HEIC or a JPEG in the documented sensor frame. Arbitrary screenshots or crops do not have a known calibration. The program returns null dimensions and an explicit reason if the envelope or reference cannot be measured. The score is the instance detector's confidence. Millimetre uncertainty requires a separate physical comparison.
+Before the second command, download [best.pth](https://github.com/Sherry-27/measure-it-envelopes/releases/download/envelope-model-v1/best.pth) into `models/runs/first/best.pth`. The full local project ZIP already has it there. Place the marker beside the envelope, keep both flat at the same height, and keep their whole outlines visible. The marker's measured outer black border is **36 × 36 mm**.
 
-## Photos and camera
+The command prints dimensions, confidence and status, and saves the overlay. It reads the original HEIC, reverses its display rotation and works in a 1200 × 900 sensor frame. It also accepts a JPEG in the documented sensor frame. An arbitrary crop has no known camera coordinates. To compare the same original without lens correction, add `--raw`.
 
-The capture contains **70 distinct HEIC files** from the same 4.25 mm iPhone 11 Pro rear lens. All have a native 4032 × 3024 sensor frame. Sixty-two use a display rotation. Decoding reverses this rotation and resizes uniformly to 1200 × 900 before lens correction. Twenty full-frame training exposures include the 7 × 9 inner-corner calibration board. Their original camera coordinates supersede the earlier differently cropped exports.
+## Data and reproduction
 
-OpenCV found all 1,260 intersections. The deployed camera model fixes square pixels and uses the 26 mm-equivalent EXIF focal length as a prior. It fits one radial coefficient because these board views cover a limited part of the frame. Training-view reprojection RMS is **1.035 px** at 1200 × 900. Omitting one view and predicting alternate corners reduced mean error from 1.163 px to 1.048 px with correction. The printed square size used for extrinsics is the nominal 18 mm. The measured marker sets the scale used for envelope measurements. [Camera parameters](calibration/parameters.json) · [Validation by view](calibration/evidence/fullframe-validation.json)
+| Download | Contents |
+| --- | --- |
+| [Camera originals](https://github.com/Sherry-27/measure-it-envelopes/releases/download/envelope-model-v1/Camera-Originals-Sanitized.zip) | 70 HEIC files with GPS and maker-note metadata removed. Every decoded RGB pixel and the display orientation were verified unchanged. |
+| [Prepared dataset](https://github.com/Sherry-27/measure-it-envelopes/releases/download/envelope-model-v1/Envelope-Dataset.zip) | 70 corrected JPEGs, 70 binary masks, the fixed split lists and reviewed outlines. Extract at the repository root. |
+| [Test overlays](https://github.com/Sherry-27/measure-it-envelopes/releases/download/envelope-model-v1/Test-Result-Images.zip) | All seven held-out predictions with mask, dimensions, confidence and reviewed outline. |
+| [Results video](https://github.com/Sherry-27/measure-it-envelopes/releases/download/envelope-model-v1/Envelope-Test-Results.mp4) | A 14-second view of the seven predictions. |
 
-The 70 object masks came from OpenCV edge and colour proposals, visual inspection of every outline, and twenty manual boundary corrections. The reviewed polygons are in sensor coordinates. The mask and its matching photograph use the same undistortion map. The reference marker and checkerboard are outside the envelope label.
+The three initial split lists have 49 training, 14 validation and 7 test filenames. The supplied photos did not follow the proposed ten per-envelope sessions. Original filenames and SHA-256 hashes were bound to those reserved slots before training. The actual scenes are recorded in [capture-index.csv](dataset/capture-index.csv).
 
-| Split | Photos | Camera scenes |
-| --- | ---: | --- |
-| Train | 49 | 20 checkerboard-and-envelope views and 29 black-surface views. |
-| Validation | 14 | Five white, eight marble and one glass. The glass exposure is excluded from checkpoint and threshold selection. |
-| Test | 7 | The seven glass-surface views of the horizontally placed envelope. |
+- Training uses 20 checkerboard-and-envelope captures and 29 black-surface views.
+- Validation contains five white, eight marble and one glass view. The glass view is excluded from every checkpoint and threshold decision.
+- Test contains the other seven glass views. These are similar photographs on one surface. Physical envelope identities could not be established.
 
-The file lists were committed first. The original filenames and hashes were bound to those lists before fine-tuning. The supplied photos did not follow the proposed ten independent object sessions. Physical envelope identities could not be verified. The test is one tabletop scene with similar views, which limits generalization claims. [Capture index](dataset/capture-index.csv) · [Reviewed outlines](dataset/reviewed-outlines.json)
+Labels started as colour and edge proposals. Every outline was inspected, with twenty manual boundary corrections. The saved polygons are in sensor coordinates, and the photo and mask use the same correction map. A rebuild from the originals reproduced all 140 training files byte-for-byte.
 
-## Reproduce
-
-The private delivery includes `Envelope-Dataset.zip`. Extract it in the repository root to populate `dataset/images` and `dataset/masks`. Alternatively, rebuild both from a directory of the original HEIC files. The rebuild checks their hashes. The restored 70 calibrated images and 70 masks were compared byte-for-byte with the training copies.
+To recreate the camera fit and dataset, extract the camera-originals ZIP into a folder, then run:
 
 ```sh
-python -m calibration.fit_iphone ORIGINAL_HEIC_FOLDER
-python -m dataset.restore ORIGINAL_HEIC_FOLDER
+python -m calibration.fit_iphone CAMERA_ORIGINALS
+python -m dataset.restore CAMERA_ORIGINALS
 python -m models.train --device cpu --out models/runs/reproduction
 python -m models.evaluate --device cpu --weights models/runs/reproduction/best.pth --out models/reproduction-evidence
-python -m measurement.audit_outputs ORIGINAL_HEIC_FOLDER --weights models/runs/reproduction/best.pth --out measurement/reproduction-evidence
 ```
 
-The versioned training configuration fine-tunes TorchVision Mask R-CNN with a COCO-pretrained ResNet-50/FPN and new two-class heads. The ResNet stages are frozen. The FPN, proposal and detection components can learn from the envelope masks. This run uses seed 2026, batch size 1, two CPU threads and right-angle rotations and horizontal flips on training data only. Validation selects the epoch and operating threshold. The CPU run uses an Intel Core i5-4300U, Windows 10 and about 8 GB RAM. [Run environment](models/evidence/environment.json) · [Training configuration](models/config.json)
+[The optional Colab notebook](https://colab.research.google.com/github/Sherry-27/measure-it-envelopes/blob/dev-test01/models/colab.ipynb) downloads the same prepared dataset, checks its hash, and runs the same five epochs on a GPU. Select a T4 runtime and run its cells once. The recorded results here came from the laptop.
 
-**Colab is optional.** The T4 notebook asks for the dataset ZIP, invokes the same training and evaluation modules on CUDA, and downloads its own run bundle. The recorded assessment scores come from the local CPU run. [Open the Colab notebook](https://colab.research.google.com/github/Sherry-27/measure-it-envelopes/blob/dev-test01/models/colab.ipynb)
+## Camera, model and timing
 
-## Geometry and physical check
+The iPhone captures use the 4.25 mm rear lens at a native 4032 × 3024. OpenCV found all 63 board corners in twenty full-frame training views. The single-radial-coefficient fit has **1.035 px reprojection RMS**. Leaving a whole view out and checking alternate corners gave mean RMS **1.048 px corrected**, compared with **1.163 px** with zero distortion. The fit uses the rounded 26 mm-equivalent EXIF focal length as a prior. The board covered a limited region of the frame, and its 18 mm square size is the nominal print value. [Camera parameters](calibration/parameters.json) · [Fit checks](calibration/evidence/fullframe-validation.json)
 
-`inference/measure.py` corrects the photo before segmentation and marker detection. `inference/geometry.py` maps the predicted contour from pixels into the measured marker plane and fits the rotated rectangle there. A folded envelope, raised marker or a marker with a bent border can invalidate the conversion.
+TorchVision Mask R-CNN starts with COCO-pretrained ResNet-50/FPN weights. The ResNet body is frozen. The FPN, proposal and prediction components fine-tune on the training masks. The run uses seed 2026, batch size 1, two CPU threads, small proposal batches and 256–384 px model inputs. Rotations and flips are applied only to training. Epoch 5 won validation selection at a score cutoff of 0.80. [Configuration](models/config.json) · [Epoch log](models/evidence/training.jsonl)
 
-For actual physical accuracy, measure each independently identified envelope with a ruler or calliper, place its longer and shorter readings in the hand-readings CSV, and pair each row with the correct original. The comparison saves both raw and corrected predictions, per-instance errors and refusals.
+The laptop is an Intel Core i5-4300U with about 8 GB RAM, Intel HD Graphics and Windows 10. Five warm calls including HEIC decoding took a median **11.08 s**, with a range of **8.76–31.64 s**. Model loading and image writing are outside that timing. [Environment](models/evidence/environment.json) · [Timing output](measurement/evidence/capture-summary.json)
+
+## Measurement and limits
+
+`inference/measure.py` calls lens correction, segmentation and reference detection. In `inference/geometry.py`, the four marker corners establish a map into its measured plane. The envelope contour is transformed first, and a rotated rectangle is fitted in millimetres. The detection score describes model confidence. It does not estimate physical uncertainty.
+
+The saved example reads **205.6 × 86.4 mm raw** and **159.7 × 70.7 mm corrected**. The difference between those predictions needs a ruler comparison before it can support an accuracy claim. The paired results for all 70 originals are saved, including refusals and disagreement with the reviewed outline. Both outlines use the same marker, so that diagnostic cannot replace hand measurements.
 
 ```sh
+python -m measurement.audit_outputs CAMERA_ORIGINALS --weights models/runs/first/best.pth
 python -m measurement.compare --table measurement/hand-readings.csv --photos measurement/photos
 ```
 
-[Plan and decisions](docs/Plan.md) · [Objectives and results](docs/Objectives.md) · [Definition of Done](docs/Definition-of-Done.md)
+The checkpoint SHA-256 is `62eace2421f7f6029d366ef2164942e17a3b39ad5f937fdfa1694d83da562b5f`. The release server and local file matched. [Verified assets](models/evidence/release-assets.json)
 
+[Plan and decisions](docs/Plan.md) · [Objectives and raw results](docs/Objectives.md) · [Definition of Done](docs/Definition-of-Done.md)

@@ -1,0 +1,52 @@
+{
+  "mask_iou": 0.9291007774216788,
+  "mask_ap50": 1.0,
+  "mask_ap50_95": 0.892036775106082,
+  "precision": 1.0,
+  "recall": 1.0,
+  "score_threshold": 0.8,
+  "mask_threshold": 0.5,
+  "match_iou": 0.5,
+  "working_long_edge_px": 1024,
+  "test_images": [
+    {
+      "file": "envelope10_01.jpg",
+      "mask_iou": 0.8654249906539917,
+      "detected": true
+    },
+    {
+      "file": "envelope10_02.jpg",
+      "mask_iou": 0.9169577360153198,
+      "detected": true
+    },
+    {
+      "file": "envelope10_03.jpg",
+      "mask_iou": 0.9178566336631775,
+      "detected": true
+    },
+    {
+      "file": "envelope10_04.jpg",
+      "mask_iou": 0.9667629599571228,
+      "detected": true
+    },
+    {
+      "file": "envelope10_05.jpg",
+      "mask_iou": 0.9518117904663086,
+      "detected": true
+    },
+    {
+      "file": "envelope10_06.jpg",
+      "mask_iou": 0.9377785921096802,
+      "detected": true
+    },
+    {
+      "file": "envelope10_07.jpg",
+      "mask_iou": 0.9471127390861511,
+      "detected": true
+    }
+  ],
+  "hardware": "cpu",
+  "os": "Windows-10-10.0.19045-SP0",
+  "torch": "2.8.0+cpu",
+  "torchvision": "0.23.0+cpu"
+}
