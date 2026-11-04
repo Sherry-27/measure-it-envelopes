@@ -1,56 +1,59 @@
 # Measure It
 
-Measure the long and short edges of one flat paper envelope using an iPhone 11 Pro and a printed reference. Width means the longer side even when the envelope is rotated.
+Measure a flat envelope from one iPhone 11 Pro photograph. Place the printed marker beside the envelope on the same plane and keep the full black border visible. Width is the longer side of the fitted envelope rectangle. Height is the shorter side.
 
-**Progress on the supplied photos.** OpenCV located the full grid in each of the 20 submitted board images. The exports have 20 different pixel dimensions and different aspect ratios. Their crop positions and scales relative to the iPhone sensor are unknown. A camera matrix that can be applied to a new iPhone image remains unverified. The supplied batch contains checkerboards only. The measured envelope results, trained weights and recording are outstanding.
+## Run a photograph
 
-Run the inspection from the repository root with `python -m calibration.inspect_views calibration/received calibration/evidence`. The corner coordinates and per-image results use the supplied pixel coordinates. The source photos and marked preview are held locally. The [20 board-only crops](calibration/evidence/board-only-crops.zip) show the printed grids on a neutral background at 1280 × 1280. Each crop retained all 63 detected intersections. The included crop map goes back to the received export. Original sensor crop offsets remain unknown. The public branch includes the [per-photo results](calibration/evidence/views.csv) and [detected coordinates](calibration/evidence/corners.json).
-
-## Capture
-
-1. Print [the A4 sheet](calibration/print-a4.pdf) at 100%. Cut along the dashed line and mount the checkerboard flat. Keep a white border around the smaller marker. Measure its outer black width and height separately. For the checkerboard, measure several consecutive squares and divide by the count; also record the measuring tool. If using only a ruler, record that the requested calliper check has not been performed.
-2. Use the iPhone 11 Pro rear 1× lens in ordinary Photo mode. Choose JPEG, one resolution and one landscape orientation for the whole session. Disable flash and lens switching if applicable. Lock focus at the working distance. Verify the lock before each set; if it cannot persist, use a camera app with fixed manual focus. Retain original files, without cropping, messaging-app compression or digital zoom.
-3. Capture about 25 sharp board images. Keep the entire grid in frame. Move the board across the centre and four corners, and rotate or tilt it modestly in both axes. Use the same focus as the envelope photos. Put JPEGs in `calibration/raw/`. Inspect the corrected preview before collecting the dataset.
-4. For the eight available envelopes, reserve physical envelopes 1 through 5 for training groups 01 through 07, envelopes 6 and 7 for validation groups 08 and 09, and envelope 8 for test group 10. Shoot seven separate arrangements per session. One unaddressed envelope and the small reference should be fully visible in each image, lying flat at the same height. Vary position, orientation, surface and lighting while keeping the camera settings. A new arrangement means physically moving the objects or camera between shots. Group 01–07 is train, 08–09 validation, and 10 test. Name originals as listed in `dataset/splits/`, e.g. `envelope01_01.jpg`, and put them in `dataset/raw/`. Preserve a private copy of the originals. Check for identifying information or GPS tags before publishing.
-5. Separately take ten fresh physical-check images, one per envelope. Measure both sides with the ruler, write down the smallest division and fill the CSV template. Also keep one missing-envelope photo, one missing-reference photo, and a fresh envelope for the live demo.
-
-## Setup
-
-Use Python 3.12 and run the commands from the repository root. Make a virtual environment, activate it, then run:
+Use Python 3.12. The measured outer border of this marker is **36 × 36 mm**. Print files, camera parameters, configuration and evidence are on `dev-test01`. Install the requirements, put the selected checkpoint at `models/runs/first/best.pth`, then run from the repository root.
 
 ```sh
 python -m pip install -r requirements.txt
+python -m inference.measure my-envelope.HEIC --out measured.jpg
 ```
 
-For a Colab GPU, open [the training launcher](https://colab.research.google.com/github/Sherry-27/measure-it-envelopes/blob/dev-test01/models/colab.ipynb) once the real undistorted JPEGs and reviewed masks are on the development branch. The launcher checks the CUDA runtime, records the Git revision and environment, runs the same two project commands, and downloads the checkpoint and evidence together. Use the same versioned project commands there. To select the CPU wheels on Windows, first install the pinned torch and torchvision versions from the PyTorch CPU index, then install the requirements. Record the actual training GPU, CUDA version, OS and library freeze in the run evidence. The intended demo computer has an Intel Core i5-4300U, about 8 GB RAM and Intel HD Graphics on Windows. Exact capture resolution and ruler division are pending collection.
+The command prints JSON and saves an overlay. It accepts native iPhone HEIC or a JPEG in the documented sensor frame. Arbitrary screenshots or crops do not have a known calibration. The program returns null dimensions and an explicit reason if the envelope or reference cannot be measured. The score is the instance detector's confidence. Millimetre uncertainty requires a separate physical comparison.
 
-## Commands
+## Photos and camera
 
-Replace the uppercase measurement placeholders with the actual millimetres read from the printed page.
+The capture contains **70 distinct HEIC files** from the same 4.25 mm iPhone 11 Pro rear lens. All have a native 4032 × 3024 sensor frame. Sixty-two use a display rotation. Decoding reverses this rotation and resizes uniformly to 1200 × 900 before lens correction. Twenty full-frame training exposures include the 7 × 9 inner-corner calibration board. Their original camera coordinates supersede the earlier differently cropped exports.
+
+OpenCV found all 1,260 intersections. The deployed camera model fixes square pixels and uses the 26 mm-equivalent EXIF focal length as a prior. It fits one radial coefficient because these board views cover a limited part of the frame. Training-view reprojection RMS is **1.035 px** at 1200 × 900. Omitting one view and predicting alternate corners reduced mean error from 1.163 px to 1.048 px with correction. The printed square size used for extrinsics is the nominal 18 mm. The measured marker sets the scale used for envelope measurements. [Camera parameters](calibration/parameters.json) · [Validation by view](calibration/evidence/fullframe-validation.json)
+
+The 70 object masks came from OpenCV edge and colour proposals, visual inspection of every outline, and twenty manual boundary corrections. The reviewed polygons are in sensor coordinates. The mask and its matching photograph use the same undistortion map. The reference marker and checkerboard are outside the envelope label.
+
+| Split | Photos | Camera scenes |
+| --- | ---: | --- |
+| Train | 49 | 20 checkerboard-and-envelope views and 29 black-surface views. |
+| Validation | 14 | Five white, eight marble and one glass. The glass exposure is excluded from checkpoint and threshold selection. |
+| Test | 7 | The seven glass-surface views of the horizontally placed envelope. |
+
+The file lists were committed first. The original filenames and hashes were bound to those lists before fine-tuning. The supplied photos did not follow the proposed ten independent object sessions. Physical envelope identities could not be verified. The test is one tabletop scene with similar views, which limits generalization claims. [Capture index](dataset/capture-index.csv) · [Reviewed outlines](dataset/reviewed-outlines.json)
+
+## Reproduce
+
+The private delivery includes `Envelope-Dataset.zip`. Extract it in the repository root to populate `dataset/images` and `dataset/masks`. Alternatively, rebuild both from a directory of the original HEIC files. The rebuild checks their hashes. The restored 70 calibrated images and 70 masks were compared byte-for-byte with the training copies.
 
 ```sh
-python -m calibration.camera calibration/raw --square-mm SQUARE_MM
-python -m dataset.prepare undistort
+python -m calibration.fit_iphone ORIGINAL_HEIC_FOLDER
+python -m dataset.restore ORIGINAL_HEIC_FOLDER
+python -m models.train --device cpu --out models/runs/reproduction
+python -m models.evaluate --device cpu --weights models/runs/reproduction/best.pth --out models/reproduction-evidence
+python -m measurement.audit_outputs ORIGINAL_HEIC_FOLDER --weights models/runs/reproduction/best.pth --out measurement/reproduction-evidence
 ```
 
-Inspect the before/after preview and the per-view RMS values in `calibration/parameters.json`. Create a CVAT image task with the undistorted JPEGs in `dataset/images/`. Draw one polygon labelled `envelope` around each outside edge. Review the outlines and export CVAT for images XML.
+The versioned training configuration fine-tunes TorchVision Mask R-CNN with a COCO-pretrained ResNet-50/FPN and new two-class heads. The ResNet stages are frozen. The FPN, proposal and detection components can learn from the envelope masks. This run uses seed 2026, batch size 1, two CPU threads and right-angle rotations and horizontal flips on training data only. Validation selects the epoch and operating threshold. The CPU run uses an Intel Core i5-4300U, Windows 10 and about 8 GB RAM. [Run environment](models/evidence/environment.json) · [Training configuration](models/config.json)
+
+**Colab is optional.** The T4 notebook asks for the dataset ZIP, invokes the same training and evaluation modules on CUDA, and downloads its own run bundle. The recorded assessment scores come from the local CPU run. [Open the Colab notebook](https://colab.research.google.com/github/Sherry-27/measure-it-envelopes/blob/dev-test01/models/colab.ipynb)
+
+## Geometry and physical check
+
+`inference/measure.py` corrects the photo before segmentation and marker detection. `inference/geometry.py` maps the predicted contour from pixels into the measured marker plane and fits the rotated rectangle there. A folded envelope, raised marker or a marker with a bent border can invalidate the conversion.
+
+For actual physical accuracy, measure each independently identified envelope with a ruler or calliper, place its longer and shorter readings in the hand-readings CSV, and pair each row with the correct original. The comparison saves both raw and corrected predictions, per-instance errors and refusals.
 
 ```sh
-python -m dataset.prepare import-cvat annotations.xml
-python -m models.train --device cuda --out models/runs/first
-python -m models.evaluate --weights models/runs/first/best.pth --out models/evidence
-python -m inference.measure new.jpg --weights models/runs/first/best.pth --marker-width-mm WIDTH_MM --marker-height-mm HEIGHT_MM --out overlay.jpg
-python -m measurement.compare --table measurement/hand-readings.csv --photos measurement/photos --marker-width-mm WIDTH_MM --marker-height-mm HEIGHT_MM
+python -m measurement.compare --table measurement/hand-readings.csv --photos measurement/photos
 ```
 
-The measurement command writes JSON and an overlay. An `ok` result contains physical width and height. Refusals contain a status and null dimensions. Confidence is the detector score; it does not estimate the physical measurement uncertainty. No scale can be recovered without the measured marker.
-
-## Method and evidence
-
-- The original pixel array is read in sensor orientation, without automatic display rotation. Resolution must match the calibration file. OpenCV lens correction keeps the original camera matrix and image size.
-- The model is TorchVision Mask R-CNN with a ResNet-50 FPN backbone. Its instance masks and confidence scores support both outline measurement and detection metrics. The training command fine-tunes the two-class heads on the envelope training split once the reviewed data is present. Images have a working long edge of at most 1024 pixels to bound CPU memory. Validation selects the checkpoint and operating threshold. Keep the test images sealed until this selection is complete.
-- Segmentation AP uses the COCO evaluator and all candidate detections. The operating-point metrics and mean IoU use a single confident prediction. Multiple confident predictions or a miss yield no accepted prediction. Report the seven test images individually; all are views of one held-out envelope.
-- The metric conversion is in `inference/geometry.py`, function `metric_box`. The four detected marker corners define a homography into its measured plane. Transform the **outline** first, then fit a rotated rectangle in that plane. A raised or folded envelope violates this assumption.
-- `measurement.compare` changes only lens correction between the two runs on each original. The summaries include the full set, refusal counts and the common accepted subset, so differing coverage is visible.
-- Put actual calibration, model and accuracy evidence in [Objectives](docs/Objectives.md) and verify each [Definition of Done](docs/Definition-of-Done.md) item. Record deviations in [Plan](docs/Plan.md). Release the chosen weights and add the download link and SHA-256 here after training. On Windows, use `Get-FileHash models/runs/first/best.pth -Algorithm SHA256`.
+[Plan and decisions](docs/Plan.md) · [Objectives and results](docs/Objectives.md) · [Definition of Done](docs/Definition-of-Done.md)
 

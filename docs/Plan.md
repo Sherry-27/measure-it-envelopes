@@ -28,3 +28,13 @@ Use the reference marker corners to establish a metric plane. The envelope and m
 Eight envelopes are available. The planned ten session IDs and the original split lists stay fixed. Training groups 01 through 07 can reuse the first five physical envelopes. Validation groups 08 and 09 reserve envelopes 6 and 7, and group 10 reserves envelope 8. The physical accuracy check still calls for ten measured instances.
 
 The first board batch contains twenty PNG exports of different sizes and aspect ratios. The original crop offsets and scaling are unavailable. Resizing each export to the same rectangle would move grid points by different unknown amounts. The inspection therefore keeps each photo in its supplied coordinates and saves the corner overlay and per-view result. The cost is that this batch cannot establish the distortion correction to apply to a fresh phone image.
+
+## Decisions after the originals arrived
+
+The last twenty originals contained both the envelope and the printed checkerboard. Sensor orientation could be recovered from the HEIC metadata. Those full-frame observations provided calibration at a consistent 1200 × 900 working size. The earlier clipboard copies remain an inspection result.
+
+Actual capture scenes replaced the planned per-envelope sessions when binding originals to the already reserved slot names. All checkerboard exposures belong to training. Seven horizontally placed envelopes on glass were held out. The eighth glass image was assigned a validation slot and excluded from every selection decision. Physical specimen IDs were unavailable. Pretraining sources and local data were kept separate, and the photographic backgrounds were kept private in the local package.
+
+A free camera fit reduced the training RMS to 0.837 px but returned a focal length far from the phone's EXIF prior and large higher-order distortion coefficients. The deployed fit fixed the principal point and focal prior and estimated one radial coefficient. Its cost was 0.198 px of training reprojection RMS. Nineteen of twenty omitted-view checks improved over zero distortion. More board tilts and corner coverage would allow this choice to be revisited.
+
+The initial Colab plan became a local CPU run to avoid waiting for a hosted accelerator. The model uses a frozen ResNet body, smaller proposal budget and 256–384 px model inputs. The cost is coarser mask edges and a longer wait on the laptop. The Colab launcher retains the same versioned training code for reproduction.

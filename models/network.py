@@ -32,6 +32,8 @@ def tensor_image(frame):
 
 def load_model(path, device):
     payload = torch.load(path, map_location="cpu", weights_only=True)
+    if str(device) == "cpu":
+        torch.set_num_threads(payload["config"].get("cpu_threads", 2))
     model = build_model(payload["config"])
     model.load_state_dict(payload["state"])
     return model.to(device).eval(), payload["score_threshold"]
