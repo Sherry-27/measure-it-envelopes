@@ -22,7 +22,7 @@ class Meter:
         self.marker = marker_width, marker_height
 
     @torch.inference_mode()
-    def measure(self, original, raw=False):
+    def measure(self, original, raw=False, refine_crop=False):
         if list(original.shape[1::-1]) == self.parameters.get("native_image_size"):
             original = cv2.resize(original, tuple(self.parameters["image_size"]), interpolation=cv2.INTER_AREA)
         if list(original.shape[1::-1]) != self.parameters["image_size"]:
@@ -41,6 +41,14 @@ class Meter:
             return result, frame
         binary = (pred["masks"][0, 0].cpu().numpy() >= 0.5).astype(np.uint8)
         mask = cv2.resize(binary, frame.shape[1::-1], interpolation=cv2.INTER_NEAREST)
+        if refine_crop:
+            from inference.crop import refine_mask
+            result["coarse_confidence"] = score
+            mask, fine_score, reason, bounds = refine_mask(frame, mask, self.model, self.device, self.score_cut)
+            result.update(confidence=fine_score, segmentation_mode="refined_crop", crop_bounds_xyxy=bounds)
+            if reason:
+                result["status"] = reason
+                return result, frame
         contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         if not contours:
             return result, frame
@@ -82,9 +90,10 @@ def main():
     p.add_argument("image", type=Path)
     p.add_argument("--out", type=Path, default=Path("overlay.jpg"))
     p.add_argument("--raw", action="store_true", help="Skip lens correction for a paired comparison on the same photograph.")
+    p.add_argument("--refine-crop", action="store_true", help="Experimental second segmentation pass; restore the mask to the original camera coordinates.")
     options(p)
     args = p.parse_args()
-    result, overlay = load_meter(args).measure(read_image(args.image), raw=args.raw)
+    result, overlay = load_meter(args).measure(read_image(args.image), raw=args.raw, refine_crop=args.refine_crop)
     text = result["status"]
     if result["status"] == "ok":
         text = f'{result["width_mm"]:.1f} x {result["height_mm"]:.1f} mm  score {result["confidence"]:.2f}'

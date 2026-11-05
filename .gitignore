@@ -13,3 +13,5 @@ Thumbs.db
 /dataset/images/
 /calibration/parameters.preview.jpg
 /dataset/masks/
+
+/demo-results/

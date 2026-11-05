@@ -1,6 +1,6 @@
 # Objectives
 
-These targets were set before capture. MO-2 is met. MO-1 remains unverified without matched ruler readings.
+These targets were set before capture. MO-2 is met. MO-1 is not met: the dimensional errors exceed 2 mm, and the delivered photos show one physical envelope rather than the planned ten.
 
 | Field | MO-1 · Physical dimensions | MO-2 · Mask overlap |
 | --- | --- | --- |
@@ -20,7 +20,7 @@ These targets were set before capture. MO-2 is met. MO-1 remains unverified with
 
 ## Final run on the iPhone captures
 
-The photo batch contains 70 distinct HEIC files. The full-frame checkerboard in twenty training exposures makes the earlier clipboard limitation inapplicable to this run. In sensor coordinates at 1200 × 900, the single-radial-coefficient calibration gives RMS **1.035 px**. Leaving each view out, predicting alternate corners, and then swapping them gave a mean RMS of **1.048 px corrected** and **1.163 px with zero distortion**. The board covered a limited part of the image. Physical verification of the nominal 18 mm square remains open. The 36 × 36 mm outer marker dimensions were reported from the user's ruler. [Calibration parameters](../calibration/parameters.json) · [Raw validation results](../calibration/evidence/fullframe-validation.json)
+The photo batch contains 70 distinct HEIC files. The full-frame checkerboard in twenty training exposures makes the earlier clipboard limitation inapplicable to this run. In sensor coordinates at 1200 × 900, the single-radial-coefficient calibration gives RMS **1.035 px**. Leaving each view out, predicting alternate corners, and then swapping them gave a mean RMS of **1.048 px corrected** and **1.163 px with zero distortion**. The board covered a limited part of the image. The later ruler reading was 90 mm across five consecutive squares in each axis, confirming an average square size of 18 mm. A 1 mm-division ruler was used, rather than the requested calliper. The 36 × 36 mm outer marker dimensions were reported from the user's ruler. [Calibration parameters](../calibration/parameters.json) · [Raw validation results](../calibration/evidence/fullframe-validation.json)
 
 ### MO-2 · Segmentation
 
@@ -38,11 +38,50 @@ The laptop ran five epochs. Epoch 5 was selected at mean validation IoU 0.9576 o
 
 ### MO-1 · Physical dimensions
 
-**Unverified.** No matched ruler readings for ten identified envelope instances were supplied. Therefore the physical mean absolute error, mean percentage error, median error and worst error remain unknown.
+**Not met.** After the model was frozen, the envelope was reported as **160 × 70 mm**, and all 70 photos were confirmed to show that same physical envelope. The scale has nine intermediate ticks per centimetre, so its smallest division is **1 mm**. There is one independent specimen and 70 repeated photo trials, including the existing training and validation views. This is narrower than the original objective's fresh photos of ten envelopes. [Reported readings](../measurement/physical-readings.json) · [Matched input table](../measurement/hand-readings.csv)
 
-For `IMG_4318.HEIC` the raw command gave **205.6 × 86.4 mm**. After correction it gave **159.7 × 70.7 mm** at confidence **0.9902**. The green outline missed part of the left floral edge. A high detection score can coexist with a biased dimension. Lens correction changed the estimated long side by **-45.9 mm** on this image. Physical error change needs its ruler reading. [Corrected output](../models/evidence/example-inference.json) · [Raw output](../models/evidence/example-raw.json)
+| Photos / mode | Accepted | Long MAE | Short MAE | Long MAPE | Short MAPE |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| All / raw | 66/70 | 15.32 mm | 4.77 mm | 9.57% | 6.81% |
+| All / corrected | 68/70 | 19.50 mm | 5.06 mm | 12.19% | 7.23% |
+| Same 66 / raw | 66/66 | 15.32 mm | 4.77 mm | 9.57% | 6.81% |
+| Same 66 / corrected | 66/66 | 19.46 mm | 5.03 mm | 12.17% | 7.19% |
+| Test 7 / raw | 7/7 | 23.25 mm | 6.53 mm | 14.53% | 9.33% |
+| Test 7 / corrected | 7/7 | 16.32 mm | 4.11 mm | 10.20% | 5.87% |
 
-The paired results table stores every original in both modes, explicit refusal reasons, and measurements of the reviewed outline using the same marker. The outline comparison checks segmentation geometry only. On the seven held-out captures, 7/7 corrected results and 7/7 raw results were accepted. [70 paired rows](../measurement/evidence/capture-results.csv) · [Split summaries](../measurement/evidence/capture-summary.json)
+| Accepted photo trials | Long mean / median / worst absolute error | Short mean / median / worst absolute error |
+| --- | --- | --- |
+| Raw (66) | 15.32 / 14.86 / 45.61 mm | 4.77 / 3.90 / 17.38 mm |
+| Corrected (68) | 19.50 / 18.02 / 121.32 mm | 5.06 / 4.06 / 41.87 mm |
+
+Every result, refusal and per-axis error is retained in the [70-row physical table](../measurement/evidence/physical/instances.csv). The [raw summary](../measurement/evidence/physical/summary.json) also gives train/validation/test groups, signed percentage errors and counts within 2 mm on both axes. Decimal error values are arithmetic against the reported ruler values, not claims of sub-millimetre ground-truth precision. No dimensions were used as inference inputs.
+
+On the **same 66 accepted photos**, correction increased mean absolute error by **4.15 mm long-side** and **0.26 mm short-side**. On the seven reserved test views it reduced the means from **23.25 / 6.53 mm** to **16.32 / 4.11 mm**. Better checker-corner reprojection did not guarantee better object dimensions. The small marker, visible paper curvature, limited calibration coverage and segmentation boundary errors are possible contributors; this dataset does not isolate their separate effects.
+
+For the saved `IMG_4318.HEIC` example, raw output was **205.61 × 86.42 mm**, with absolute errors **45.61 / 16.42 mm**. Corrected output was **159.69 × 70.67 mm**, with errors **0.31 / 0.67 mm**. The predicted mask still misses part of an edge, so this close numerical result does not prove that every geometric step is accurate. The full table is the relevant accuracy evidence.
+
+### Failure condition · Digital dimming
+
+After the ruler comparison, lighting sensitivity was tested by multiplying pixel intensities in the first white-surface and marble-surface validation photos by six fixed factors. Geometry, model and threshold stayed fixed. These are **digital variants of two existing views**, not new captures or a physical illumination experiment.
+
+| Intensity factor | Accepted / attempted | Long-side MAE | Short-side MAE |
+| ---: | ---: | ---: | ---: |
+| 1 | 2/2 | 15.03 mm | 0.67 mm |
+| 0.5 | 1/2 | 16.07 mm | 0.50 mm |
+| 0.25 | 1/2 | 16.54 mm | 2.09 mm |
+| 0.125 | 0/2 | not reported | not reported |
+| 0.0625 | 0/2 | not reported | not reported |
+| 0.03125 | 0/2 | not reported | not reported |
+
+For the marble view, long-side error changed from 15.68 mm at full intensity to 16.54 mm at one-quarter intensity. At one-eighth intensity the marker was not found. The white view failed the confidence cutoff already at one-half intensity. Refusals remain in the denominator; an empty accepted set is not zero error.
+
+Lighting was chosen because this test changes one image property while keeping the scene geometry fixed. It does not reproduce exposure adaptation, sensor noise, shadows or glare. A physical reshoot under measured illumination remains outside the delivered evidence. [All 12 outputs](../measurement/evidence/brightness/trials.csv) · [Summary](../measurement/evidence/brightness/summary.json) · [Preview](../measurement/evidence/brightness/preview.jpg)
+
+### Requested crop check
+
+An automatic second segmentation pass used the coarse mask's bounding box with 20% padding per side and a 16 px minimum. It ran **after undistortion**, then mapped the fine mask back to full-frame coordinates. Ground-truth outlines and dimensions did not choose the crop.
+
+On the 13 eligible validation views, long-side MAE worsened from **9.94 to 13.95 mm** and short-side MAE from **2.36 to 6.68 mm**, with 13/13 accepted in both modes. The crop option stays off by default. No test image was processed in this experiment, and the original test metrics still describe the full-frame baseline. [Per-photo comparison](../measurement/evidence/crop/trials.csv) · [Summary](../measurement/evidence/crop/summary.json) · [Preview](../measurement/evidence/crop/preview.jpg)
 
 ### Operating point and time
 

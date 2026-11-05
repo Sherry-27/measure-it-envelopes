@@ -1,0 +1,91 @@
+{
+  "baseline": {
+    "total": 13,
+    "accepted": 13,
+    "refused": 0,
+    "within_2mm_both_axes": 0,
+    "width": {
+      "mae_mm": 9.94427020733173,
+      "median_abs_mm": 12.891632080078125,
+      "worst_abs_mm": 15.676010131835938,
+      "mean_signed_pct": -5.86448962871845,
+      "mean_absolute_pct": 6.215168879582332
+    },
+    "height": {
+      "mae_mm": 2.3560873178335338,
+      "median_abs_mm": 2.254669189453125,
+      "worst_abs_mm": 6.607215881347656,
+      "mean_signed_pct": 1.5028146597055287,
+      "mean_absolute_pct": 3.3658390254764767
+    }
+  },
+  "refined": {
+    "total": 13,
+    "accepted": 13,
+    "refused": 0,
+    "within_2mm_both_axes": 0,
+    "width": {
+      "mae_mm": 13.948257446289062,
+      "median_abs_mm": 16.04296875,
+      "worst_abs_mm": 26.575759887695312,
+      "mean_signed_pct": -8.437406833355244,
+      "mean_absolute_pct": 8.717660903930664
+    },
+    "height": {
+      "mae_mm": 6.684814453125,
+      "median_abs_mm": 2.2197647094726562,
+      "worst_abs_mm": 33.02249526977539,
+      "mean_signed_pct": -7.342784168956044,
+      "mean_absolute_pct": 9.549734933035715
+    }
+  },
+  "common_accepted": {
+    "baseline": {
+      "total": 13,
+      "accepted": 13,
+      "refused": 0,
+      "within_2mm_both_axes": 0,
+      "width": {
+        "mae_mm": 9.94427020733173,
+        "median_abs_mm": 12.891632080078125,
+        "worst_abs_mm": 15.676010131835938,
+        "mean_signed_pct": -5.86448962871845,
+        "mean_absolute_pct": 6.215168879582332
+      },
+      "height": {
+        "mae_mm": 2.3560873178335338,
+        "median_abs_mm": 2.254669189453125,
+        "worst_abs_mm": 6.607215881347656,
+        "mean_signed_pct": 1.5028146597055287,
+        "mean_absolute_pct": 3.3658390254764767
+      }
+    },
+    "refined": {
+      "total": 13,
+      "accepted": 13,
+      "refused": 0,
+      "within_2mm_both_axes": 0,
+      "width": {
+        "mae_mm": 13.948257446289062,
+        "median_abs_mm": 16.04296875,
+        "worst_abs_mm": 26.575759887695312,
+        "mean_signed_pct": -8.437406833355244,
+        "mean_absolute_pct": 8.717660903930664
+      },
+      "height": {
+        "mae_mm": 6.684814453125,
+        "median_abs_mm": 2.2197647094726562,
+        "worst_abs_mm": 33.02249526977539,
+        "mean_signed_pct": -7.342784168956044,
+        "mean_absolute_pct": 9.549734933035715
+      }
+    }
+  },
+  "crop_rule": "Coarse mask bounding box, 20% padding per side with a 16 px minimum; second prediction mapped back into the full corrected frame.",
+  "uses_ground_truth_to_crop": false,
+  "test_images_processed": 0,
+  "independent_physical_specimens": 1,
+  "validation_favors_crop": false,
+  "scope": "Post-training validation diagnostic. Original test scores describe the full-frame baseline only. No unseen-object or new-test-set claim.",
+  "checkpoint_sha256": "62eace2421f7f6029d366ef2164942e17a3b39ad5f937fdfa1694d83da562b5f"
+}

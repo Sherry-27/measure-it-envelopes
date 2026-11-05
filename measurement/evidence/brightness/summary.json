@@ -1,0 +1,124 @@
+{
+  "study": "digital brightness sensitivity; not a physical illumination experiment",
+  "operation": "round(sensor-frame RGB * intensity_factor), clipped to uint8; no geometry changes",
+  "sources": [
+    "IMG_4298.HEIC",
+    "IMG_4308.HEIC"
+  ],
+  "factors": [
+    1.0,
+    0.5,
+    0.25,
+    0.125,
+    0.0625,
+    0.03125
+  ],
+  "independent_physical_specimens": 1,
+  "choice": "Lighting is varied in software while each view, marker, outline geometry and physical dimensions stay fixed.",
+  "selection": "First capture from each of the white and marble validation surfaces; factors fixed before this run.",
+  "interpretation": "One deterministic run per source and factor; repeated pixels are not independent samples.",
+  "limitations": [
+    "Global digital dimming omits camera noise, exposure adaptation, local shadows and glare.",
+    "Both source views are from the existing validation data; this is a diagnostic after model freezing.",
+    "No threshold or checkpoint was changed using these outcomes."
+  ],
+  "by_factor": [
+    {
+      "intensity_factor": 1.0,
+      "total": 2,
+      "accepted": 2,
+      "refused": 0,
+      "within_2mm_both_axes": 0,
+      "width": {
+        "mae_mm": 15.031135559082031,
+        "median_abs_mm": 15.031135559082031,
+        "worst_abs_mm": 15.676010131835938,
+        "mean_signed_pct": -9.39445972442627,
+        "mean_absolute_pct": 9.39445972442627
+      },
+      "height": {
+        "mae_mm": 0.6710090637207031,
+        "median_abs_mm": 0.6710090637207031,
+        "worst_abs_mm": 0.9318923950195312,
+        "mean_signed_pct": -0.9585843767438615,
+        "mean_absolute_pct": 0.9585843767438615
+      }
+    },
+    {
+      "intensity_factor": 0.5,
+      "total": 2,
+      "accepted": 1,
+      "refused": 1,
+      "within_2mm_both_axes": 0,
+      "width": {
+        "mae_mm": 16.068267822265625,
+        "median_abs_mm": 16.068267822265625,
+        "worst_abs_mm": 16.068267822265625,
+        "mean_signed_pct": -10.042667388916016,
+        "mean_absolute_pct": 10.042667388916016
+      },
+      "height": {
+        "mae_mm": 0.4978179931640625,
+        "median_abs_mm": 0.4978179931640625,
+        "worst_abs_mm": 0.4978179931640625,
+        "mean_signed_pct": -0.7111685616629464,
+        "mean_absolute_pct": 0.7111685616629464
+      }
+    },
+    {
+      "intensity_factor": 0.25,
+      "total": 2,
+      "accepted": 1,
+      "refused": 1,
+      "within_2mm_both_axes": 0,
+      "width": {
+        "mae_mm": 16.536224365234375,
+        "median_abs_mm": 16.536224365234375,
+        "worst_abs_mm": 16.536224365234375,
+        "mean_signed_pct": -10.335140228271484,
+        "mean_absolute_pct": 10.335140228271484
+      },
+      "height": {
+        "mae_mm": 2.0927658081054688,
+        "median_abs_mm": 2.0927658081054688,
+        "worst_abs_mm": 2.0927658081054688,
+        "mean_signed_pct": -2.9896654401506697,
+        "mean_absolute_pct": 2.9896654401506697
+      }
+    },
+    {
+      "intensity_factor": 0.125,
+      "total": 2,
+      "accepted": 0,
+      "refused": 2,
+      "within_2mm_both_axes": 0,
+      "width": null,
+      "height": null
+    },
+    {
+      "intensity_factor": 0.0625,
+      "total": 2,
+      "accepted": 0,
+      "refused": 2,
+      "within_2mm_both_axes": 0,
+      "width": null,
+      "height": null
+    },
+    {
+      "intensity_factor": 0.03125,
+      "total": 2,
+      "accepted": 0,
+      "refused": 2,
+      "within_2mm_both_axes": 0,
+      "width": null,
+      "height": null
+    }
+  ],
+  "checkpoint_sha256": "62eace2421f7f6029d366ef2164942e17a3b39ad5f937fdfa1694d83da562b5f",
+  "reading_record_at_run_sha256": "f3adb58f65ad81bc7b83dd888ecfb7f02c4a87b2f941c0567c12976247bff6bc",
+  "physical_dimensions_used_mm": [
+    160.0,
+    70.0
+  ],
+  "reading_record_update": "Smallest ruler division was clarified later as 1 mm; dimensions and all trial outputs are unchanged."
+}
