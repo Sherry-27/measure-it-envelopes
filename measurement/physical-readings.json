@@ -1,0 +1,35 @@
+{
+  "reported_on": "2026-11-05",
+  "source": "User-supplied ruler readings in the assessment conversation, after model and test results were frozen.",
+  "envelope": {
+    "specimen_id": "E01",
+    "long_side_mm": 160.0,
+    "short_side_mm": 70.0,
+    "user_reading": "16 x 7 cm envelope",
+    "all_70_photos_same_physical_envelope": true,
+    "identity_confirmation": "Ek hi physical envelope hai",
+    "independent_physical_specimens": 1,
+    "ruler_division_mm": 1.0,
+    "ruler_description": "Centimetre-marked scale: nine intermediate ticks between 0 and 1 cm, so ten intervals of 1 mm."
+  },
+  "checkerboard": {
+    "user_reading": "board 9cm height and 9 cm width",
+    "reading_context": "Reply to the request for the total length of five consecutive squares horizontally and vertically.",
+    "squares_per_span": 5,
+    "horizontal_span_mm": 90.0,
+    "vertical_span_mm": 90.0,
+    "square_width_mm": 18.0,
+    "square_height_mm": 18.0,
+    "instrument": "ruler, not calliper"
+  },
+  "reference": {
+    "outer_black_width_mm": 36.0,
+    "outer_black_height_mm": 36.0,
+    "source": "Earlier user measurement, 3.6 cm per side."
+  },
+  "limits": [
+    "One physical envelope measured once and matched to 70 original photo trials.",
+    "No new physical object or fresh capture was added by reusing this reading.",
+    "The scale division is 1 mm. Repeatability and alignment uncertainty were not measured; no sub-millimetre ground-truth precision is claimed."
+  ]
+}

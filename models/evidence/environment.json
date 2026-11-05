@@ -1,0 +1,31 @@
+{
+  "cpu": "Intel Core i5-4300U",
+  "logical_cpus": 4,
+  "ram_bytes": 8262426624,
+  "graphics": "Intel HD Graphics",
+  "training_device": "cpu",
+  "os": "Windows-10-10.0.19045-SP0",
+  "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+  "torch": "2.8.0+cpu",
+  "torchvision": "0.23.0+cpu",
+  "numpy": "2.2.6",
+  "opencv": "4.12.0",
+  "Pillow": "13.0.0",
+  "pillow_heif": "1.1.1",
+  "pycocotools": "2.0.10",
+  "train_threads": 2,
+  "cuda_available": false,
+  "camera": "Apple iPhone 11 Pro",
+  "native_sensor_px": [
+    4032,
+    3024
+  ],
+  "working_sensor_px": [
+    1200,
+    900
+  ],
+  "actual_focal_mm": 4.25,
+  "metadata_equivalent_focal_mm": 26,
+  "marker_outer_width_mm": 36,
+  "marker_outer_height_mm": 36
+}

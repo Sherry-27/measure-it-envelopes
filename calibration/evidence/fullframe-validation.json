@@ -1,0 +1,139 @@
+{
+  "unconstrained_rms_px": 0.837206619019933,
+  "unconstrained_matrix": [
+    [
+      1453.3731170352942,
+      0.0,
+      418.01459186011306
+    ],
+    [
+      0.0,
+      1495.1224241913471,
+      524.0785934165519
+    ],
+    [
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "unconstrained_distortion": [
+    -0.3108247961755225,
+    3.374979242200351,
+    0.01753903357307715,
+    0.0164259196341524,
+    -8.724311031160926
+  ],
+  "corner_extent_px": [
+    [
+      501.5280456542969,
+      279.27459716796875
+    ],
+    [
+      1009.4938354492188,
+      713.7125854492188
+    ]
+  ],
+  "leave_one_view_out": [
+    {
+      "file": "IMG_4373.HEIC",
+      "corrected": 1.01373327359193,
+      "zero_distortion": 1.1631668683181422
+    },
+    {
+      "file": "IMG_4374.HEIC",
+      "corrected": 1.1425099299142505,
+      "zero_distortion": 1.2835908397502391
+    },
+    {
+      "file": "IMG_4375.HEIC",
+      "corrected": 1.223357119295048,
+      "zero_distortion": 1.390886382107784
+    },
+    {
+      "file": "IMG_4376.HEIC",
+      "corrected": 1.3527401807886081,
+      "zero_distortion": 1.475239129691084
+    },
+    {
+      "file": "IMG_4377.HEIC",
+      "corrected": 1.2608067816295159,
+      "zero_distortion": 1.426183649525944
+    },
+    {
+      "file": "IMG_4378.HEIC",
+      "corrected": 1.2284992587403676,
+      "zero_distortion": 1.3591389971017283
+    },
+    {
+      "file": "IMG_4379.HEIC",
+      "corrected": 1.0630869275362886,
+      "zero_distortion": 1.1734271497512154
+    },
+    {
+      "file": "IMG_4380.HEIC",
+      "corrected": 1.0935278735892695,
+      "zero_distortion": 1.2030089974103475
+    },
+    {
+      "file": "IMG_4381.HEIC",
+      "corrected": 0.9666785015870275,
+      "zero_distortion": 1.0926696263703937
+    },
+    {
+      "file": "IMG_4382.HEIC",
+      "corrected": 0.9442146286784381,
+      "zero_distortion": 1.1001493690572264
+    },
+    {
+      "file": "IMG_4383.HEIC",
+      "corrected": 0.8628864936612806,
+      "zero_distortion": 0.9471046932787407
+    },
+    {
+      "file": "IMG_4384.HEIC",
+      "corrected": 0.8968590010265153,
+      "zero_distortion": 1.0355761225442297
+    },
+    {
+      "file": "IMG_4385.HEIC",
+      "corrected": 0.876006571709024,
+      "zero_distortion": 1.0103138046624858
+    },
+    {
+      "file": "IMG_4386.HEIC",
+      "corrected": 1.1021432392793349,
+      "zero_distortion": 1.0889042013544512
+    },
+    {
+      "file": "IMG_4387.HEIC",
+      "corrected": 1.0723999204427386,
+      "zero_distortion": 1.2114578324357879
+    },
+    {
+      "file": "IMG_4388.HEIC",
+      "corrected": 0.9461118389474545,
+      "zero_distortion": 1.0789322540396564
+    },
+    {
+      "file": "IMG_4389.HEIC",
+      "corrected": 0.9812488014849077,
+      "zero_distortion": 1.0921902135819663
+    },
+    {
+      "file": "IMG_4390.HEIC",
+      "corrected": 0.9564465875307774,
+      "zero_distortion": 1.0409769668599176
+    },
+    {
+      "file": "IMG_4391.HEIC",
+      "corrected": 0.9886332142204723,
+      "zero_distortion": 1.060239729607783
+    },
+    {
+      "file": "IMG_4392.HEIC",
+      "corrected": 0.9847974463646222,
+      "zero_distortion": 1.0260440861772795
+    }
+  ]
+}

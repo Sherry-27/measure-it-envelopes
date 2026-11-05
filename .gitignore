@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+.venv/
+*.pth
+models/runs/
+.DS_Store
+Thumbs.db
+.ipynb_checkpoints/
+
+
+/calibration/received/
+/calibration/evidence/detected-views.jpg
+/dataset/images/
+/calibration/parameters.preview.jpg
+/dataset/masks/
+
+/demo-results/
