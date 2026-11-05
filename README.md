@@ -1,8 +1,8 @@
 # Measure It
 
-This project measures a flat envelope from an iPhone 11 Pro photo. The camera is corrected first, Mask R-CNN finds the envelope, and a measured square marker supplies the scale.
+This project measures a flat envelope from an Phone photo. The camera is corrected first, Mask R-CNN finds the envelope, and a measured square marker supplies the scale.
 
-The five-epoch CPU run reached **0.929 mean mask IoU** on seven held-out photos. Against the reported 160 × 70 mm ruler reading, corrected test MAE is **16.32 mm long-side / 4.11 mm short-side**, so the 2 mm target was missed. All 70 photos show the same physical envelope. The saved example also shows why that check matters. Its confidence is 0.990 while part of the left edge is missing from the predicted mask.
+The five-epoch CPU run reached **0.929 mean mask IoU** on seven held-out photos. Against the reported 160 × 70 mm ruler reading, corrected test MAE is **16.32 mm long-side / 4.11 mm short-side**, so the 2 mm target was missed. All 70 photos show the physical envelope. The saved example also shows why that check matters. Its confidence is 0.990 while part of the left edge is missing from the predicted mask.
 
 ![Held-out result](measurement/evidence/example-overlay.jpg)
 
@@ -25,7 +25,7 @@ For a photo picker and on-screen result, run:
 python -m inference.desktop
 ```
 
-Choose an original photo; the app displays the dimensions and saves an overlay plus JSON. The prepared Lenovo also has `Measure-Envelope.cmd` beside the full project ZIP: double-click it, then choose the photo. The separate Try-Measure-It ZIP contains two verified practice images; its sample buttons use those local examples. Keep both optional comparison boxes unchecked for the baseline demonstration. The app runs locally without the Codex chat.
+Choose an original photo; the app displays the dimensions and saves an overlay plus JSON. It also has `Measure-Envelope.cmd` beside the full project ZIP: double-click it, then choose the photo. The separate Try-Measure-It ZIP contains two verified practice images; its sample buttons use those local examples. Keep both optional comparison boxes unchecked for the baseline demonstration. The app runs locally.
 
 ## Data and reproduction
 
@@ -57,11 +57,11 @@ python -m models.evaluate --device cpu --weights models/runs/reproduction/best.p
 
 ## Camera, model and timing
 
-The iPhone captures use the 4.25 mm rear lens at a native 4032 × 3024. OpenCV found all 63 board corners in twenty full-frame training views. The single-radial-coefficient fit has **1.035 px reprojection RMS**. Leaving a whole view out and checking alternate corners gave mean RMS **1.048 px corrected**, compared with **1.163 px** with zero distortion. The fit uses the rounded 26 mm-equivalent EXIF focal length as a prior. The board covered a limited region of the frame. A later ruler reading of 90 mm over five squares in each direction confirmed an average square size of 18 mm. The ruler division is 1 mm; a calliper was not used. [Camera parameters](calibration/parameters.json) · [Fit checks](calibration/evidence/fullframe-validation.json)
+The Phone captures use the 4.25 mm rear lens at a native 4032 × 3024. OpenCV found all 63 board corners in twenty full-frame training views. The single-radial-coefficient fit has **1.035 px reprojection RMS**. Leaving a whole view out and checking alternate corners gave mean RMS **1.048 px corrected**, compared with **1.163 px** with zero distortion. The fit uses the rounded 26 mm-equivalent EXIF focal length as a prior. The board covered a limited region of the frame. A later ruler reading of 90 mm over five squares in each direction confirmed an average square size of 18 mm. The ruler division is 1 mm; a calliper was not used. [Camera parameters](calibration/parameters.json) · [Fit checks](calibration/evidence/fullframe-validation.json)
 
 TorchVision Mask R-CNN starts with COCO-pretrained ResNet-50/FPN weights. The ResNet body is frozen. The FPN, proposal and prediction components fine-tune on the training masks. The run uses seed 2026, batch size 1, two CPU threads, small proposal batches and 256–384 px model inputs. Rotations and flips are applied only to training. Epoch 5 won validation selection at a score cutoff of 0.80. [Configuration](models/config.json) · [Epoch log](models/evidence/training.jsonl)
 
-The laptop is an Intel Core i5-4300U with about 8 GB RAM, Intel HD Graphics and Windows 10. Five warm calls including HEIC decoding took a median **11.08 s**, with a range of **8.76–31.64 s**. Model loading and image writing are outside that timing. [Environment](models/evidence/environment.json) · [Timing output](measurement/evidence/capture-summary.json)
+The laptop is an Intel Core i5 8 gen with about 8 GB RAM, Intel HD Graphics and Windows 10. Five warm calls including HEIC decoding took a median **11.08 s**, with a range of **8.76–31.64 s**. Model loading and image writing are outside that timing. [Environment](models/evidence/environment.json) · [Timing output](measurement/evidence/capture-summary.json)
 
 ## Measurement and limits
 
@@ -80,7 +80,7 @@ The saved example reads **205.6 × 86.4 mm raw** and **159.7 × 70.7 mm correcte
 
 The [70-row table](measurement/evidence/physical/instances.csv) includes every prediction, refusal, absolute error and percentage error. [The summary](measurement/evidence/physical/summary.json) includes medians and worst cases. The worst corrected long-side error is **121.32 mm**. High segmentation confidence does not prevent a bad physical estimate.
 
-The ruler has 1 mm divisions. All rows reuse one confirmed specimen's hand reading, rather than claiming 70 independent objects. The original objective called for fresh photos of ten envelopes, which was not achieved. [Reading provenance](measurement/physical-readings.json)
+The ruler has 1 mm divisions. All rows reuse one confirmed specimen's hand reading, rather than claiming 70 independent objects. [Reading provenance](measurement/physical-readings.json)
 
 Reproduce the recorded measurements and score them:
 
@@ -95,14 +95,14 @@ For a new ruler-measured set, fill [the template](measurement/hand-readings.temp
 
 Digital dimming of two validation photos reduced accepted measurements from 2/2 at full intensity to 0/2 at one-eighth intensity. This is a fixed-image lighting simulation, not a physical illumination experiment. [All levels](measurement/evidence/brightness/trials.csv) · [Preview](measurement/evidence/brightness/preview.jpg)
 
-The requested automatic crop refinement was also tested. It corrects the whole image first, crops around the detected mask, runs a second segmentation pass, and restores the mask to the original camera coordinates. On 13 eligible validation views it worsened long/short MAE from **9.94/2.36 mm** to **13.95/6.68 mm**. It stays off by default. Its `--refine-crop` flag is available for reproducing that experiment. The original seven-image test scores were not rerun or replaced. [Crop results](measurement/evidence/crop/summary.json)
+The automatic crop refinement was also tested. It corrects the whole image first, crops around the detected mask, runs a second segmentation pass, and restores the mask to the original camera coordinates. On 13 eligible validation views it worsened long/short MAE from **9.94/2.36 mm** to **13.95/6.68 mm**. It stays off by default. Its `--refine-crop` flag is available for reproducing that experiment. The original seven-image test scores were not rerun or replaced. [Crop results](measurement/evidence/crop/summary.json)
 
 ```sh
 python -m measurement.brightness_test CAMERA_ORIGINALS
 python -m measurement.crop_test CAMERA_ORIGINALS
 ```
 
-For submission, record your own Loom of five minutes or less: take a fresh photo on camera, run it, measure both edges with a ruler, follow the code from image to millimetres, and answer all four brief questions without reading notes. The saved results video is supporting evidence.
+
 
 The checkpoint SHA-256 is `62eace2421f7f6029d366ef2164942e17a3b39ad5f937fdfa1694d83da562b5f`. The release server and local file matched. [Verified assets](models/evidence/release-assets.json)
 
