@@ -16,6 +16,9 @@ from pathlib import Path
 def summarize(rows, mode):
     accepted = [r for r in rows if r[f"{mode}_status"] == "ok"]
     summary = {"total": len(rows), "accepted": len(accepted), "refused": len(rows)-len(accepted)}
+    summary["within_2mm_both_axes"] = sum(
+        all(abs(r[f"{mode}_{axis}_mm"]-r[f"hand_{axis}_mm"]) <= 2 for axis in ("width", "height"))
+        for r in accepted)
     for axis in ("width", "height"):
         if not accepted:
             summary[axis] = None
@@ -38,9 +41,12 @@ def load_truth(path):
     if len(rows) < 10 or len({r["id"] for r in rows}) != len(rows) or len({r["file"] for r in rows}) != len(rows):
         raise ValueError("Need at least ten distinct photo trials with unique IDs and filenames.")
     for row in rows:
-        if not all(row[k].strip() for k in required):
+        if not all((row.get(k) or "").strip() for k in required - {"ruler_division_mm"}):
             raise ValueError(f"Missing physical reading or specimen identity for {row['file']}.")
         for key in ("hand_width_mm", "hand_height_mm", "ruler_division_mm"):
+            if key == "ruler_division_mm" and not row[key].strip():
+                row[key] = None
+                continue
             try:
                 row[key] = float(row[key])
             except ValueError:
@@ -109,6 +115,8 @@ def compare(args):
     summary["common_accepted"] = {m: summarize(paired, m) for m in ("raw", "corrected")}
     summary["trials_per_specimen"] = dict(Counter(r["specimen_id"] for r in truth))
     summary["unique_specimens"] = len(summary["trials_per_specimen"])
+    summary["ruler_divisions_mm"] = sorted({r["ruler_division_mm"] for r in truth if r["ruler_division_mm"] is not None})
+    summary["ruler_division_unknown_trials"] = sum(r["ruler_division_mm"] is None for r in truth)
     summary["by_split"] = {
         split: {m: summarize([r for r in truth if r["split"] == split], m) for m in ("raw", "corrected")}
         for split in sorted({r["split"] for r in truth})

@@ -1,0 +1,232 @@
+{
+  "raw": {
+    "total": 70,
+    "accepted": 66,
+    "refused": 4,
+    "within_2mm_both_axes": 1,
+    "width": {
+      "mae_mm": 15.315833467425723,
+      "median_abs_mm": 14.8648681640625,
+      "worst_abs_mm": 45.607421875,
+      "mean_signed_pct": -4.979648951328162,
+      "mean_absolute_pct": 9.572395917141076
+    },
+    "height": {
+      "mae_mm": 4.77020263671875,
+      "median_abs_mm": 3.901569366455078,
+      "worst_abs_mm": 17.382705688476562,
+      "mean_signed_pct": -1.2877209155590503,
+      "mean_absolute_pct": 6.8145751953125
+    }
+  },
+  "corrected": {
+    "total": 70,
+    "accepted": 68,
+    "refused": 2,
+    "within_2mm_both_axes": 1,
+    "width": {
+      "mae_mm": 19.50259803323185,
+      "median_abs_mm": 18.02196502685547,
+      "worst_abs_mm": 121.31777954101562,
+      "mean_signed_pct": -7.565820076886346,
+      "mean_absolute_pct": 12.189123770769905
+    },
+    "height": {
+      "mae_mm": 5.057870135587804,
+      "median_abs_mm": 4.05517578125,
+      "worst_abs_mm": 41.87492370605469,
+      "mean_signed_pct": -2.2754907207328734,
+      "mean_absolute_pct": 7.225528765125435
+    }
+  },
+  "common_accepted": {
+    "raw": {
+      "total": 66,
+      "accepted": 66,
+      "refused": 0,
+      "within_2mm_both_axes": 1,
+      "width": {
+        "mae_mm": 15.315833467425723,
+        "median_abs_mm": 14.8648681640625,
+        "worst_abs_mm": 45.607421875,
+        "mean_signed_pct": -4.979648951328162,
+        "mean_absolute_pct": 9.572395917141076
+      },
+      "height": {
+        "mae_mm": 4.77020263671875,
+        "median_abs_mm": 3.901569366455078,
+        "worst_abs_mm": 17.382705688476562,
+        "mean_signed_pct": -1.2877209155590503,
+        "mean_absolute_pct": 6.8145751953125
+      }
+    },
+    "corrected": {
+      "total": 66,
+      "accepted": 66,
+      "refused": 0,
+      "within_2mm_both_axes": 1,
+      "width": {
+        "mae_mm": 19.46445488207268,
+        "median_abs_mm": 18.02196502685547,
+        "worst_abs_mm": 121.31777954101562,
+        "mean_signed_pct": -7.401880495476,
+        "mean_absolute_pct": 12.165284301295426
+      },
+      "height": {
+        "mae_mm": 5.030044729059393,
+        "median_abs_mm": 4.05517578125,
+        "worst_abs_mm": 41.87492370605469,
+        "mean_signed_pct": -2.2188355912377826,
+        "mean_absolute_pct": 7.1857781843705615
+      }
+    }
+  },
+  "trials_per_specimen": {
+    "E01": 70
+  },
+  "unique_specimens": 1,
+  "ruler_divisions_mm": [
+    1.0
+  ],
+  "ruler_division_unknown_trials": 0,
+  "by_split": {
+    "test": {
+      "raw": {
+        "total": 7,
+        "accepted": 7,
+        "refused": 0,
+        "within_2mm_both_axes": 0,
+        "width": {
+          "mae_mm": 23.25219508579799,
+          "median_abs_mm": 16.8741455078125,
+          "worst_abs_mm": 45.607421875,
+          "mean_signed_pct": 7.532426289149693,
+          "mean_absolute_pct": 14.532621928623744
+        },
+        "height": {
+          "mae_mm": 6.528835296630859,
+          "median_abs_mm": 4.321929931640625,
+          "worst_abs_mm": 16.419158935546875,
+          "mean_signed_pct": 3.8034672639807874,
+          "mean_absolute_pct": 9.326907566615514
+        }
+      },
+      "corrected": {
+        "total": 7,
+        "accepted": 7,
+        "refused": 0,
+        "within_2mm_both_axes": 1,
+        "width": {
+          "mae_mm": 16.315235682896205,
+          "median_abs_mm": 15.8690185546875,
+          "worst_abs_mm": 36.83964538574219,
+          "mean_signed_pct": -3.510514668055943,
+          "mean_absolute_pct": 10.197022301810128
+        },
+        "height": {
+          "mae_mm": 4.109252384730747,
+          "median_abs_mm": 4.722198486328125,
+          "worst_abs_mm": 6.225360870361328,
+          "mean_signed_pct": -3.5732401633749205,
+          "mean_absolute_pct": 5.870360549615354
+        }
+      }
+    },
+    "train": {
+      "raw": {
+        "total": 49,
+        "accepted": 46,
+        "refused": 3,
+        "within_2mm_both_axes": 0,
+        "width": {
+          "mae_mm": 16.92617947122325,
+          "median_abs_mm": 15.962638854980469,
+          "worst_abs_mm": 43.43621826171875,
+          "mean_signed_pct": -7.865278928176217,
+          "mean_absolute_pct": 10.578862169514531
+        },
+        "height": {
+          "mae_mm": 5.077282366545304,
+          "median_abs_mm": 4.267662048339844,
+          "worst_abs_mm": 17.382705688476562,
+          "mean_signed_pct": -3.063680873894543,
+          "mean_absolute_pct": 7.253260523636149
+        }
+      },
+      "corrected": {
+        "total": 49,
+        "accepted": 48,
+        "refused": 1,
+        "within_2mm_both_axes": 0,
+        "width": {
+          "mae_mm": 22.556135495503742,
+          "median_abs_mm": 20.689422607421875,
+          "worst_abs_mm": 121.31777954101562,
+          "mean_signed_pct": -8.617995778719584,
+          "mean_absolute_pct": 14.09758468468984
+        },
+        "height": {
+          "mae_mm": 5.927943070729573,
+          "median_abs_mm": 4.369941711425781,
+          "worst_abs_mm": 41.87492370605469,
+          "mean_signed_pct": -3.1095266342163086,
+          "mean_absolute_pct": 8.468490101042248
+        }
+      }
+    },
+    "val": {
+      "raw": {
+        "total": 14,
+        "accepted": 13,
+        "refused": 1,
+        "within_2mm_both_axes": 1,
+        "width": {
+          "mae_mm": 5.344260582557092,
+          "median_abs_mm": 5.8194122314453125,
+          "worst_abs_mm": 8.925827026367188,
+          "mean_signed_pct": -1.5062295473538911,
+          "mean_absolute_pct": 3.340162864098182
+        },
+        "height": {
+          "mae_mm": 2.7366567758413463,
+          "median_abs_mm": 2.0402679443359375,
+          "worst_abs_mm": 6.07257080078125,
+          "mean_signed_pct": 2.2550360711066277,
+          "mean_absolute_pct": 3.9095096797733517
+        }
+      },
+      "corrected": {
+        "total": 14,
+        "accepted": 13,
+        "refused": 1,
+        "within_2mm_both_axes": 0,
+        "width": {
+          "mae_mm": 9.94427020733173,
+          "median_abs_mm": 12.891632080078125,
+          "worst_abs_mm": 15.676010131835938,
+          "mean_signed_pct": -5.86448962871845,
+          "mean_absolute_pct": 6.215168879582332
+        },
+        "height": {
+          "mae_mm": 2.3560873178335338,
+          "median_abs_mm": 2.254669189453125,
+          "worst_abs_mm": 6.607215881347656,
+          "mean_signed_pct": 1.5028146597055287,
+          "mean_absolute_pct": 3.3658390254764767
+        }
+      }
+    }
+  },
+  "paired_mae_change_mm": {
+    "width": 4.148621414646957,
+    "height": 0.2598420923406426
+  },
+  "paired_mae_change_meaning": "Corrected minus raw on the same accepted photos; negative is improvement.",
+  "mo1_scope_met": false,
+  "mo1_met": false,
+  "scope_note": "MO-1 originally specified fresh photos of ten physical envelopes. Existing dataset captures and repeated views can support a descriptive ruler comparison, but do not establish that scope. Split summaries retain any training-data reuse; photo trials are not independent specimens.",
+  "inputs": {
+    "hand_readings_sha256": "488d5378ed171eaedc3bd53fecd81d346460e2b7f050446f4d717da224c5052b",
+    "predictions_sha256": "5def30dea77d1cd2b3089ccffd44ed67631154e448c0944be872ebbbbf6b9a0f"
+  }
+}

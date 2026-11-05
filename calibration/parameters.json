@@ -8,7 +8,7 @@
     3024
   ],
   "square_mm": 18.0,
-  "square_size_basis": "nominal print specification; physical reading unavailable",
+  "square_size_basis": "User ruler reading: 90 mm over 5 consecutive squares in each axis = 18 mm; measurement/physical-readings.json. No calliper used.",
   "fit": "single radial coefficient; fixed centre, zero tangent, square pixels and 26 mm-equivalent EXIF focal prior",
   "camera_matrix": [
     [

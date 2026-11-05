@@ -51,8 +51,16 @@ def fit_board(originals, output, evidence, source_map=Path("dataset/capture-inde
             scores[key]=float(np.sqrt(np.mean(errors)))
         held.append(dict(file=names[i],**scores))
     spread=np.array(views).reshape(-1,2)
+    basis="nominal print specification; physical reading unavailable"
+    reading_path=Path("measurement/physical-readings.json")
+    if reading_path.exists():
+        board=json.loads(reading_path.read_text(encoding="utf-8"))["checkerboard"]
+        if all(np.isclose(board[k],square_mm) for k in ("square_width_mm","square_height_mm")):
+            basis=(f"User ruler reading: {board['horizontal_span_mm']:g} mm over "
+                   f"{board['squares_per_span']} consecutive squares in each axis = {square_mm:g} mm; "
+                   "measurement/physical-readings.json. No calliper used.")
     params=dict(image_size=[1200,900],native_image_size=[4032,3024],square_mm=square_mm,
-                square_size_basis="nominal print specification; physical reading unavailable",
+                square_size_basis=basis,
                 fit="single radial coefficient; fixed centre, zero tangent, square pixels and 26 mm-equivalent EXIF focal prior",
                 camera_matrix=K.tolist(),distortion=D.ravel().tolist(),rms_px=float(rms),accepted=names,rejected=[row['source'] for row in rows if row['source'] not in names],per_view_rms_px=per)
     output.parent.mkdir(parents=True,exist_ok=True);evidence.mkdir(parents=True,exist_ok=True)
