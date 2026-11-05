@@ -66,6 +66,16 @@ python -m measurement.audit_outputs CAMERA_ORIGINALS --weights models/runs/first
 python -m measurement.compare --table measurement/hand-readings.csv --photos measurement/photos
 ```
 
+For the existing photos, fill [the ruler table](measurement/hand-readings.template.csv) and save it as `measurement/hand-readings.csv`. Its ten filenames cover the recorded surfaces and front/back views. Give each physical envelope an ID and reuse that ID when the same envelope appears again. Enter the actual ruler reading and the ruler's smallest division in millimetres. Blank readings are rejected.
+
+The saved predictions can be scored without loading or retraining the model:
+
+```sh
+python -m measurement.compare --table measurement/hand-readings.csv --predictions measurement/evidence/capture-results.csv
+```
+
+This writes the per-photo errors, mean/median/worst errors, percentage errors, refusals and paired error change under `measurement/evidence/physical/`. It counts physical envelopes separately and reports train, validation and test captures separately. Reusing these photos provides a descriptive comparison; the original MO-1 scope was fresh photos of ten physical envelopes. Neither ruler values nor physical errors have been filled in yet.
+
 The checkpoint SHA-256 is `62eace2421f7f6029d366ef2164942e17a3b39ad5f937fdfa1694d83da562b5f`. The release server and local file matched. [Verified assets](models/evidence/release-assets.json)
 
 [Plan and decisions](docs/Plan.md) · [Objectives and raw results](docs/Objectives.md) · [Definition of Done](docs/Definition-of-Done.md)
