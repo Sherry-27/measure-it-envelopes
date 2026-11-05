@@ -23,10 +23,18 @@ class Meter:
 
     @torch.inference_mode()
     def measure(self, original, raw=False, refine_crop=False):
-        if list(original.shape[1::-1]) == self.parameters.get("native_image_size"):
-            original = cv2.resize(original, tuple(self.parameters["image_size"]), interpolation=cv2.INTER_AREA)
-        if list(original.shape[1::-1]) != self.parameters["image_size"]:
-            raise ValueError("Image size differs from the calibration resolution.")
+        target_w, target_h = self.parameters["image_size"]
+        height, width = original.shape[:2]
+        if [width, height] != [target_w, target_h]:
+            if height * target_h == width * target_w:
+                original = cv2.rotate(original, cv2.ROTATE_90_COUNTERCLOCKWISE)
+                height, width = original.shape[:2]
+            if width * target_h != height * target_w:
+                raise ValueError(
+                    "Choose an uncropped original 4:3 camera photo (HEIC/JPG/PNG). "
+                    "This file has a different aspect ratio, so its camera calibration cannot be reused. "
+                    "Try Sample 1 first; do not select a screenshot or a cropped image.")
+            original = cv2.resize(original, (target_w, target_h), interpolation=cv2.INTER_AREA)
         frame = original.copy() if raw else correct(original, self.parameters)
         small = working_frame(frame)
         pred = self.model([tensor_image(small).to(self.device)])[0]

@@ -37,6 +37,13 @@ class Desktop:
         self.again.pack(side="left",padx=8)
         self.open_button=ttk.Button(bar,text="Open saved image",command=self.open_image,state="disabled")
         self.open_button.pack(side="left")
+        samples=ttk.Frame(outer);samples.pack(fill="x",pady=(8,0))
+        self.sample_buttons=[]
+        for number in (1,2):
+            button=ttk.Button(samples,text=f"Try sample {number}",command=lambda n=number:self.sample(n))
+            button.pack(side="left",padx=(0,8))
+            self.sample_buttons.append(button)
+        ttk.Label(samples,text="Samples are for practice; use a fresh photo for your recording.").pack(side="left")
         options=ttk.Frame(outer);options.pack(fill="x",pady=(12,8))
         self.raw=tk.BooleanVar(value=False)
         self.crop=tk.BooleanVar(value=False)
@@ -62,6 +69,16 @@ class Desktop:
         ttk.Label(outer,textvariable=self.saved,wraplength=940).pack(anchor="w",pady=(4,0))
         root.after(100,self.poll)
 
+    def sample(self,number):
+        path=self.repo.parent/f"Sample-{number}.png"
+        if not path.exists():
+            messagebox.showinfo("Sample unavailable","Place Sample-1.png and Sample-2.png beside the project folder, or choose your own original photo.")
+            return
+        self.photo=path
+        self.raw.set(False)
+        self.crop.set(False)
+        self.run()
+
     def pick(self):
         path=filedialog.askopenfilename(title="Choose an original envelope photo",
             filetypes=[("Camera photos","*.HEIC *.heic *.JPG *.jpg *.JPEG *.jpeg *.PNG *.png"),("All files","*.*")])
@@ -71,7 +88,7 @@ class Desktop:
 
     def busy(self,yes):
         state="disabled" if yes else "normal"
-        for widget in (self.choose,self.again,self.raw_check,self.crop_check):
+        for widget in (self.choose,self.again,self.raw_check,self.crop_check,*self.sample_buttons):
             widget.configure(state=state)
         self.open_button.configure(state="disabled" if yes or self.last_overlay is None else "normal")
         if yes:self.progress.start(15)
@@ -110,7 +127,7 @@ class Desktop:
         except Exception as error:
             self.output.mkdir(parents=True,exist_ok=True)
             log=self.output/"last-error.txt"
-            log.write_text(traceback.format_exc(),encoding="utf-8")
+            log.write_text("Photo: "+str(photo)+"\n"+traceback.format_exc(),encoding="utf-8")
             self.events.put(("error",str(error),log))
 
     def poll(self):

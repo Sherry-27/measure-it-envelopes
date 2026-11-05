@@ -17,7 +17,7 @@ python -m inference.measure my-envelope.HEIC --out measured.jpg
 
 Before the second command, download [best.pth](https://github.com/Sherry-27/measure-it-envelopes/releases/download/envelope-model-v1/best.pth) into `models/runs/first/best.pth`. The full local project ZIP already has it there. Place the marker beside the envelope, keep both flat at the same height, and keep their whole outlines visible. The marker's measured outer black border is **36 × 36 mm**.
 
-The command prints dimensions, confidence and status, and saves the overlay. It reads the original HEIC, reverses its display rotation and works in a 1200 × 900 sensor frame. It also accepts a JPEG in the documented sensor frame. An arbitrary crop has no known camera coordinates. To compare the same original without lens correction, add `--raw`.
+The command prints dimensions, confidence and status, and saves the overlay. It reads the original HEIC, reverses its display rotation and works in a 1200 × 900 sensor frame. It also accepts uncropped 4:3 raster photos, including portrait orientation and uniform resizing; these are normalized back to the same frame. Resizing can change corner and mask precision, so original HEIC is preferred. An arbitrary crop has no known camera coordinates and a different aspect ratio is rejected. To compare the same original without lens correction, add `--raw`.
 
 For a photo picker and on-screen result, run:
 
@@ -25,7 +25,7 @@ For a photo picker and on-screen result, run:
 python -m inference.desktop
 ```
 
-Choose an original photo; the app displays the dimensions and saves an overlay plus JSON. The prepared Lenovo also has `Measure-Envelope.cmd` beside the full project ZIP: double-click it, then choose the photo. Keep both optional comparison boxes unchecked for the baseline demonstration. The app runs locally without the Codex chat.
+Choose an original photo; the app displays the dimensions and saves an overlay plus JSON. The prepared Lenovo also has `Measure-Envelope.cmd` beside the full project ZIP: double-click it, then choose the photo. The separate Try-Measure-It ZIP contains two verified practice images; its sample buttons use those local examples. Keep both optional comparison boxes unchecked for the baseline demonstration. The app runs locally without the Codex chat.
 
 ## Data and reproduction
 
